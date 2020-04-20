@@ -1,0 +1,21 @@
+baseURL = "https://reitzig.github.io/today-i-learned"
+title = "Today I Learned"
+languageCode = "en-us"
+copyright = "© 2020 Raphael Reitzig"
+
+theme = "hugo-notepadium"
+
+[params]
+#slogan = "Lesson of the day"
+license = ""
+
+[params.nav]
+showTags = true             # /tags/
+
+#[[params.nav.custom]]
+#title = "Github"
+#url = "https://github.com/reitzig"
+
+[[params.nav.custom]]
+title = "About"
+url = "impressum"
