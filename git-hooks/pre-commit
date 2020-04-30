@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Acknowledgements:
+#  - https://github.com/mprpic/git-spell-check
+#  - https://stackoverflow.com/q/33610682/539599
+#  - https://stackoverflow.com/a/10015707/539599
+
+set -u
+
+exec < /dev/tty
+
+for f in $(git diff --name-only --cached | grep content/); do
+    echo "Spell-checking ${f} ... "
+    aspell \
+        --mode=sgml \
+        --add-sgml-skip={ulink,code,literal,firstname,parameter,option,package,replaceable,programlisting,userinput,screen,filename,command,computeroutput,abbrev,accel,orgname,surname,foreignphrase,acronym,hardware,keycap,systemitem,application} \
+        --lang="en" \
+        --home-dir=. \
+        check "${f}"
+    if [[ $? != 0 ]]; then
+        # Unfortunately, this never happens.
+        # --> https://github.com/GNUAspell/aspell/issues/598
+        echo 'Aborted.'
+        exit 1
+    else
+        if ! git diff --quiet "${f}"; then
+            echo "Staging changes to ${f}"
+            git add "${f}"
+        fi
+    fi
+done
