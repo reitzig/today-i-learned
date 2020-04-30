@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+# Runs a spell-checker on all staged content files, and
+# stages any changes made.
+#
 # Acknowledgements:
 #  - https://github.com/mprpic/git-spell-check
 #  - https://stackoverflow.com/q/33610682/539599
 #  - https://stackoverflow.com/a/10015707/539599
+#  - https://stackoverflow.com/a/3879077/539599
 
 set -u
 
@@ -29,3 +33,14 @@ for f in $(git diff --name-only --cached | grep content/); do
         fi
     fi
 done
+
+if ! git diff --quiet .aspell*; then
+    echo "Staging updated aspell dictionary"
+    git add .aspell.*
+fi
+
+backup_count=$(find content -name '*.bak' | wc -l)
+if [[ $backup_count -gt 0 ]]; then
+    echo "Spell-check left ${backup_count} backup files behind."
+    echo " --> find content -name '*.bak' | xargs rm"
+fi
