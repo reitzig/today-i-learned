@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Runs a spell-checker on all staged content files, and
-# stages any changes made.
+# Run a spell-checker on all staged content files, and
+# stage any changes made.
 #
 # Acknowledgements:
 #  - https://github.com/mprpic/git-spell-check

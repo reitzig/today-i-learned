@@ -34,3 +34,6 @@ url = "impressum"
 [params.syntax]
 use = "hljs"
 theme = "github"
+
+[params.assets]
+css = ["css/fixes.css"]
