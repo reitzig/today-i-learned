@@ -1,0 +1,42 @@
+---
+title: "Rescue a Lost Commit"
+date: 2020-04-28T11:43:44+02:00
+tags: ["Tool", "Git"]
+---
+
+By some creative Git juggling, I actually managed to "lose" a commit today.
+Believe it or not, that was a first for me!
+<!--more-->
+
+More specifically, I accidentally reset a local branch to the wrong place like so:
+
+....
+$ git checkout current-pr
+< make some changes >
+$ git commit -m "Fancy stuff"
+< juggling happens, possibly in a UI client >
+$ git checkout current-pr
+$ git reset --hard other-branch
+....
+
+Now, (at least) that latest commit is no longer referenced and does not appear in `+git log+` anymore.
+Lucky for me, commits are not that easily lost:
+
+....
+$ git reflog
+....
+
+Now you get a quite extensive list of operations you ran, which allows you to retrace your steps.
+You will be looking for a line similar to this:
+
+....
+3376db5 HEAD@{25}: commit: Fancy stuff
+....
+
+I had a more expressive commit message, so the revision in question was easy to find.
+Now all I had to do was merge this revision into what was left of my branch:
+
+....
+$ git reset --hard origin/current-pr
+$ git merge --ff 3376db5
+....
