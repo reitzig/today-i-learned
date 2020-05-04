@@ -1,8 +1,14 @@
+/* I don't like the background introduced with 2.6.x. */
+.article.markdown-body {
+    background-image: none;
+}
+
+/* I prefer a keyboard-ey look over the code-ey look. */
 span.keyseq kbd {
     font-family: Menlo,Consolas,liberation mono,monospace;
     display: inline-block;
     color: rgba(0,0,0,.8);
-    font-size: .65em;
+    font-size: .70em;
     line-height: 1.45;
     background-color: #f7f7f7;
     border: 1px solid #ccc;
