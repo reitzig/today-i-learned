@@ -2,10 +2,9 @@
 title: "Manage IDEA Changelists for Bad Lines"
 date: 2020-04-22T18:57:48+02:00
 tags: ["Tool", "Intellij IDEA", "Git"]
-draft: true
 ---
 
-How do _you_ handle not committing these bits and pieces the reviewers don not want to see?
+How do _you_ handle not committing these bits and pieces the reviewers do not want to see?
 
 <!--more-->
 
@@ -16,7 +15,10 @@ Not all changes you make to files should be committed.
 Staging resp. committing only parts of files is a useful feature of Git in that regard.
 On the command line, add the `+-p+` option when staging or committing.
 Good visual clients such as IDEA also support this.
-// TODO: image
+    
+[link=img/2020-05-07-partial-commit.png]
+image::img/2020-05-07-partial-commit.png[Partial commit UI in IDEA]
+
 One problems remains, though: you have to repeat the exclusion for every commit.
 
 *Changelists*::
@@ -24,12 +26,16 @@ IDEA has this concept that seems almost redundant when using Git, but here it he
 You can think of them as similar to Git stashes, but a bit more flexible.
 In this context, the important thing is that you can selectively exclude changes from commits,
 even if you commit changes in the same file.
-// TODO: image
+
+[link=img/2020-05-07-commit-with-changelists.png]
+image::img/2020-05-07-commit-with-changelists.png[Commit with changelists]
 
 *Gutter UI*::
-And this got me excited today: Whenever you click on the gutter bar indicating a change,
+And this got me excited today: Whenever you click on the gutter stripe indicating a change,
 you can move that chunk to a separate changelist.
 This is way more robust than interactive commits:
 I can decide not to commit a change _while working_,
 and I can not forget later to exclude it.
-// TODO: image
+
+[link=img/2020-05-07-gutter-ui.png]
+image::img/2020-05-07-gutter-ui.png[Gutter UI to move change to changelist]
