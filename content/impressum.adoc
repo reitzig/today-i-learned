@@ -1,7 +1,56 @@
 ---
 title: "Impressum"
+lastMod: 2020-05-10T18:00:00+02:00
 ---
 
-This is me!
+This is were I drop snippets and small insights that do not fit any other format;
+too trivial for a blog post but too long or too structured for Twitter and the like.
 
-// TODO: write
+Also, this is a playground for tech I wanted to pick up: AsciiDoc, Hugo, and GitHub actions.
+Obviously.
+
+Other forms of content end up on:
+
+ - link:https://twitter.com/OmegaPolice][@OmegaPolice] on Twitter, for commentary and trivialities,
+ - link:https://github.com/reitzig[reitzig] on GitHub for coding projects, and
+ - link:http://reitzig.github.io/[reitzig.github.io], for computer science things (which rests, alas, mostly abandoned).
+
+
+## License
+
+Unless stated otherwise, all content is licensed under a 
+link:http://creativecommons.org/licenses/by/4.0/[Creative Commons Attribution 4.0 International License].
+
+
+## Data Privacy
+
+These sites were generated statically; there is no user interaction.
+I do not use any tracking services.
+As such, no visitor data is collected.
+I do not get any data about you.
+
+Since the website is hosted on GitHub Pages, the corporate entity GitHub, Inc. may be able to collect metadata such as you visiting this page.
+
+
+## Disclaimer
+
+I deny any responsibility for content on third-party sites I link to.
+You can not prevent others from producing sick things, right?
+That said, I do not intend to promote or endorse illicit content, however implicitly.
+Should I have linked to troublesome material by accident or oversight,
+please let me know so I can remove the links in question.
+
+I am -- for better or worse -- responsible for these pages here, though. 
+Please contact me if you feel that your personal rights or business plans have been violated by the content I provide; 
+I most certainly did not intend to do so. Thank you.
+
+Any opinions I voice on these pages are solely my own.
+
+
+## German Legalese
+
+While I do not _think_ I need it -- this website being a non-profit, recreational venture -- IANAL applies.
+So here comes what German law requires you to put on a maybe-even-remotely-construable-as-commercial website,
+at pain of being sent cease-and-desist letters asking for thousands of Euros by random yet ... endeavouring lawyers.
+
+TODO
