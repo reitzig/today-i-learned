@@ -3,6 +3,10 @@
     background-image: none;
 }
 
+.article.markdown-body p {
+    margin-bottom: 1ex;
+}
+
 /* I prefer a keyboard-ey look over the code-ey look. */
 span.keyseq kbd {
     font-family: Menlo,Consolas,liberation mono,monospace;
