@@ -2,7 +2,6 @@
 title: "Navigating Slack"
 date: 2020-04-24T16:50:47+02:00
 tags: ["Tool", "Slack"]
-draft: true
 ---
 
 Navigating Slack efficiently is not as bad as I thought.

@@ -1,6 +1,7 @@
 ---
 title: "Impressum"
 lastMod: 2020-05-10T18:00:00+02:00
+robots: "noindex"
 ---
 
 This is were I drop snippets and small insights that do not fit any other format;
