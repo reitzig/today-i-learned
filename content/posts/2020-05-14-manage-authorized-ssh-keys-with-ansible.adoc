@@ -1,0 +1,67 @@
+---
+title: "Authorizing Only Your Team With Ansible"
+date: 2020-05-14T11:18:52+02:00
+tags: ["Tool", "Ansible", "DevOps"]
+---
+
+Authorizing SSH keys with Ansible is made easy by the `+authorized_key+` module.
+Or is it?
+<!--more-->
+
+In the most simple case, we just want to authorize a single key, say the one of the current user:
+
+```yaml
+- name: Authorize me
+  authorized_key:
+    user: "john_doe"
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+    state: present
+```
+
+Now, in our project we wanted to authorize multiple team members for a shared account,
+potentially with differences between hosts.
+So we put public keys in the playbook repository and did something like this:
+
+```yaml
+- name: Authorize team
+  authorized_key:
+    user: "team_doe"
+    key: "{{ lookup('file', item) }}"
+    state: present
+  with_fileglob:
+    - "config/{{ inventory_dir | basename }}/ssh_keys/*.pub"
+```
+
+This is nice, but has a fatal flaw:
+We do not de-authorize keys when we remove them from the playbook!
+In case of a single key, we would solve this by adding `+exclusive: true+` but, alas,
+this is
+    link:https://docs.ansible.com/ansible/2.9/modules/authorized_key_module.html#parameter-exclusive[not possible here]:
+
+[quote]
+This option is not loop aware, so if you use `+with_+`, it will be exclusive per iteration of the loop.
+If you want multiple keys in the file you need to pass them all to key in a single batch as mentioned above.
+
+Therefore, we have to concatenate the key files.
+We could do this up-front and have only a single file with all keys in the playbook,
+but we prefer one file per key for transparency and maintainability reasons.
+Lucky for us, there we can also
+    link:https://stackoverflow.com/a/41843308/539599[assemble a multi-line string inline]:
+
+```yaml
+- name: Authorize team
+  authorized_key:
+    user: "team_doe"
+    key: |
+      {% for filename in lookup('fileglob', 'config/{{ inventory_dir | basename }}/ssh_keys/*.pub', wantlist=true) -%}
+      {{ lookup('file', filename) }}
+
+      {% endfor %}
+    state: present
+    exclusive: true
+```
+
+Note the extra empty line in the `+for+`-loop which translates into a line-break in the resulting string.
+
+CAUTION: The output of `+ansible-playbook+` does not seem to indicate that it removed any keys from the server.
+         You may want to check separately that the desired effect was achieved.
