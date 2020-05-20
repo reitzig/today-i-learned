@@ -15,4 +15,8 @@ ad="$(
 
 "${ad}" \
     --attribute=experimental=true \
+    --attribute=icons=font \
     "$@"
+
+# TODO: Disable web fonts? Is that even effective?
+#    --attribute=webfonts! \

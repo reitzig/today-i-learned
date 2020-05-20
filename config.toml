@@ -36,4 +36,7 @@ use = "hljs"
 theme = "github"
 
 [params.assets]
-css = ["css/fixes.css"]
+css = [
+    "css/fixes.css", 
+    "css/admonitions.css"
+]

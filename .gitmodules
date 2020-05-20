@@ -1,3 +1,6 @@
 [submodule "themes/hugo-notepadium"]
 	path = themes/hugo-notepadium
 	url = https://github.com/cntrump/hugo-notepadium.git
+[submodule "themes/asciidoctor-skins"]
+	path = themes/asciidoctor-skins
+	url = git@github.com:darshandsoni/asciidoctor-skins.git
