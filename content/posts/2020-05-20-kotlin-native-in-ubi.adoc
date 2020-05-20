@@ -1,0 +1,69 @@
+---
+title: "Kotlin Native in UBI"
+date: 2020-05-20T10:42:16+02:00
+tags: ["Docker", "Containers", "Kotlin", "DevOps", "OpenShift"]
+---
+
+Does Kotlin Native compile and run on RedHat\'s Universal Base Image (UBI)?
+<!--more-->
+
+First, why build your container image on top of UBI at all?
+Well, it is apparently best practice on OpenShift, at least if you ask RedHat.
+They can 
+    link:https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image[explain better].
+
+Since Kotlin Native does not work in quite _any_ container
+    -- to my knowledge, Alpine is currently not supported --
+the question presents itself: will it run?
+
+Turns out it does in the way you would expect:
+
+.Dockerfile
+```Dockerfile
+FROM registry.access.redhat.com/ubi7/ubi:latest AS build
+
+<install Java and Kotlin Native>
+
+COPY hello-world.kt ./
+RUN export PATH=kotlin-native-linux-${kotlin_version}/bin:$PATH \
+ && kotlinc-native hello-world.kt -o hello-world
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+FROM registry.access.redhat.com/ubi7/ubi-minimal:latest AS run
+
+COPY --from=build hello-world.kexe ./hello-world
+
+CMD ./hello-world
+```
+
+[NOTE]
+====
+I skipped the installation of Kotlin Native here; 
+it is not as neat as one would wish.
+Maybe there will be a `+yum+` package at some point.
+
+Full sources: link:https://gist.github.com/reitzig/fbd5bb9e02a4b1fc9eeffa7544d25732[Gist]
+====
+
+The final image is quite small (~80MB), with only a single binary added to the base image --
+which is, of course, the point of the exercise.
+
+Proof of life:
+
+```text
+$ docker build -t ubi-knative-demo . \
+    && docker run --rm ubi-knative-demo
+<snip>
+Hello World, I'm Kotlin Native!
+```
+
+[CAUTION]
+====
+Building the `+build+` stage takes a while (~4min for me) and
+the resulting image is huge (~2.9GB).
+Docker does _not_ cache and clean up intermediate images in multi-stage builds very well,
+so exercise caution lest you bury your system drive (like I did).
+
+`+docker image prune+` is your friend.
+====
