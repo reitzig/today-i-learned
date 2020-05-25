@@ -1,0 +1,22 @@
+/* Includes some extensions; cf.
+   - https://github.com/cntrump/hugo-notepadium/pull/85
+   - https://github.com/cntrump/hugo-notepadium/pull/86 */
+
+{{- $css := "" -}}
+{{- $cssPageAssets := .Params.assets.css | default (slice ) -}}
+{{- $cssAssets := union site.Params.assets.css $cssPageAssets -}}
+{{- range $cssAssets -}}
+  {{- $customCSS := resources.Get . | resources.ExecuteAsTemplate "foo" . }}
+  {{- if $customCSS -}}
+    {{- $scss := false -}}
+    {{- $filePath := . | lower -}}
+    {{- if or (strings.HasSuffix $filePath ".scss") (strings.HasSuffix $filePath ".sass") -}}{{- $scss = true -}}{{- end -}}
+    {{- if $scss -}}{{- $customCSS = $customCSS | resources.ToCSS -}}{{- end -}}
+    {{- if eq $css "" -}}
+      {{- $css = $customCSS -}}
+    {{- else -}}
+      {{- $css = slice $css $customCSS | resources.Concat (printf "%s.tmp_custom.css" .) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $css -}}

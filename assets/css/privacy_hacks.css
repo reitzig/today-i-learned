@@ -1,0 +1,11 @@
+span.hack_1:before {
+    content: "{{ getenv "HUGO_ENV_PRIVATE_ADDRESS" }}"
+}
+
+span.hack_2:before {
+    content: "{{ getenv "HUGO_ENV_PRIVATE_USER" }}";
+}
+
+span.hack_2:after {
+    content: "{{ getenv "HUGO_ENV_PRIVATE_DOMAIN" }}";
+}

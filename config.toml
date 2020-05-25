@@ -38,5 +38,6 @@ theme = "github"
 [params.assets]
 css = [
     "css/fixes.css", 
-    "css/admonitions.css"
+    "css/admonitions.css",
+    "css/privacy_hacks.css" # TODO: only in impressum.adoc ?
 ]
