@@ -1,0 +1,208 @@
+---
+title: "Hacking Cucumber: Isolating Features With Docker"
+date: 2020-05-26T12:51:10+02:00
+tags: ["Tool", "Testing", "Performance"]
+---
+
+Instead of hacking around the missing feature-level hooks _in_ Cucumber,
+we can leverage our familiar container tools from the _outside_!
+<!--more-->
+
+If you say "hell yea", you may want to skip over my mental ramp-up and
+directly to my <<solution,proposed solution>>.
+
+_Disclaimer:_ I do not have tons of experience with Cucumber.
+This post is a distillate of layman-expert frustrations that I see mirrored in many places online.
+There may be better solutions to the problem I\'m about to describe,
+including using a tool more suited to the tests I want to write.
+
+## The Problem
+
+link:https://cucumber.io/docs/gherkin/[Gherkin]'s 
+`+Feature+` is just ... not a first-class entity in 
+  link:https://cucumber.io/docs/cucumber/[Cucumber]:
+The steps you write in `+Background+` are simply copied down to every `+Scenario+`.
+Same for the existing
+  link:https://cucumber.io/docs/cucumber/api/#hooks[hooks]: 
+they all trigger for each `+Scenario+`.
+While that makes for a very simple and clear runtime model, it has its limits.
+
+By far the biggest issue for me is _speed_.
+I do not use Cucumber for glorified unit tests but for system-level tests;
+any step may include file, database, or network I/O.
+Thus, shared test setup is crucial:
+Even in my tiny hobby project, I run >100 scenarios.
+If setup takes just 1s (it\'s more), that amounts to >99s overhead -- for ~30s of tests!
+
+Of course, balancing test isolation versus execution speed is a problem inherent to testing,
+and not at all exclusive to Cucumber.
+Bridging the gap between declaring intent and executing tests _is_ a problem that every testing framework struggles with.
+That said, Cucumber seems to specifically prevent building bridges over that gap, and
+maintainers of Cucumber are on record saying that, no, this is as intended,
+and if you have this problem you are using it wrong (e.g.
+  link:https://github.com/cucumber/cucumber-ruby/issues/678#issuecomment-43198445[here]).
+
+Well.
+
+
+## Possible Hacks
+
+Coming from frameworks like JUnit, us developer types are used to something like a
+`+BeforeAll+`/`+AfterAll+` hook pair scoped to files, classes, or a similar unit of grouping; 
+Cucumber (only) has the equivalent of `+BeforeEach+`/`+AfterEach+`. 
+Lifting this to `+BeforeAll+` is not too hard by making the hook idempotent:
+
+```ruby
+Before do
+  if setup_needed?
+    perform_setup
+  end
+end
+```
+
+I actually prefer to make the setup explicit in Gherkin `+Background+`,
+so I did
+
+```ruby
+Given 'set up' do 
+  if setup_needed?
+    perform_setup
+  end
+end
+```
+
+This has the added benefit of being able to pass feature- and/or scenario-specific values 
+(note how `+Before+` can not even access the scenario, let alone the feature!) 
+and providing more opportunity for modularization and re-use than hooks.
+
+Now, if `+setup_needed?+` is significantly faster than `+perform_setup+` 
+-- a global property could be used, if all else fails --
+this solves the setup cost problem.
+
+But how do we tear down a setup in an orderly way so the next `+Feature+` can start from scratch?
+There is not even an equivalent to `+Background+` in Gherkin! 
+Without slapping tear-down on "the last" scenario 
+(preventing clear test documents _and_ parallel test execution)
+either explicitly or counting, there does not seem to be a way.
+The best the community has to offer seems to be:
+
+```ruby
+at_exit do
+  tear_down
+end
+```
+
+This goes directly to the Ruby kernel, though, and can not be controlled per feature.
+
+
+## Interlude: Wrapping Cucumber
+
+After writing the _next_ section, I realized I needed to get an intermediate case out of my brain:
+If Cucumber does not support isolating features, we can sure help it along:
+
+```bash
+for f in features/*.feature; do
+  cucumber "$f"
+done
+```
+
+Now, the workarounds mentioned above _do_, kinda, work per feature.
+If setup and tear-down are feasible (or preferable) to do outside of the test framework,
+one might even go one step further:
+
+```bash
+setup/before_all.sh
+
+for f in features/*.feature; do
+  feature=$(basename "${f}" '.feature')
+
+  if [ -f setup/before_${feature}.sh ]; then
+    setup/before_${feature}.sh
+  fi
+
+  cucumber "$f"
+
+  if [ -f setup/after_${feature}.sh ]; then
+    setup/after_${feature}.sh
+  fi
+done
+
+setup/after_all.sh
+```
+
+And if you\'re not willing...
+
+I for one do not appreciate moving test logic out of the test code. Smells.
+
+## [[solution]]Isolation on Platform Level
+
+I use Docker to run my tests in order to isolate them from my machine
+-- each test may mess with my system, and I _really_ do not want to write `+after_all.sh+` --
+so why not isolate features on _that_ level? Here goes (sketch):
+
+```Dockerfile
+FROM ruby:2.5.8-slim-buster
+
+WORKDIR app
+COPY Gemfile ./
+RUN bundle install \
+ && rm Gemfile
+
+COPY . ./
+WORKDIR app/test
+ENTRYPOINT ["cucumber"]
+CMD []
+```
+
+Easy enough:
+
+```bash
+docker build -t my-project-tests -f test/Dockerfile . \
+  && docker run --rm my-project-tests
+```
+
+I tied this into IDEA and I do not perceive any overhead;
+rebuilding the last few layers after code changes is blazing fast.
+For reference, in my case this `+docker run+` runs about ~55s.
+Now, looping like above _does_ add some overhead:
+
+```bash
+for f in features/*.feature; do
+    docker run --rm my-project-tests "$f"
+done
+```
+
+This ran for ~75s.
+I attribute most of that to one scenario having to actually set up something it would "borrow" in a single run;
+that is, the cost here is from isolation, not using Docker.
+Indeed, moving this shared setup to `+Dockerfile+`, I get ~38s for both single and loopy run!
+
+### Summary
+
+So what does this give us?
+
+* Runs of the individual features are perfectly isolated (up to shared resources outside of the containers, of course):
+** No `+after_+` hooks/scripts necessary beyond scenario level, at all.
+** Neither dependency nor impact on the host machine.
+** No accidental interference between tests.
+** Features can be tested in parallel by default. Indeed:
++
+```bash
+for f in features/*.feature; do
+    docker run --rm my-project-tests "${f}" &
+done
+wait < <(jobs -p)
+```
++
+drops the above down to ~18s, with ~15s being the longest individual run! +
+(This is on my Linux machine with #cores > #features, so YMMV.)
+* (Shared) Setup can be moved to (base-)image build time.
+
+I think this approach has quite some potential!
+One can easily imagine having one `+Dockerfile+` per feature and/or
+using other sub-setting features of Cucumber to fine-tune the trade-off between isolation and running time even further.
+
+The biggest challenge, I expect, is clarity: 
+Ideally, we would _see_ all setup in the Gherkin files;
+as far as it is relevant on the behaviour/domain level, anyway.
+Maybe, with some experience, a container-driven runner for Cucumber could be built?

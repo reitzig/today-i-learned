@@ -4,7 +4,7 @@
 }
 
 /* I like having visual structure. */
-.article.markdown-body p {
+.article.markdown-body p, pre.highlight {
     margin-bottom: 1ex;
 }
 
