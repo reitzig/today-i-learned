@@ -14,7 +14,7 @@ Obviously.
 
 Other forms of content end up on:
 
- - link:https://twitter.com/OmegaPolice][@OmegaPolice] on Twitter, for commentary and trivialities,
+ - link:https://twitter.com/OmegaPolice[@OmegaPolice] on Twitter, for commentary and trivialities,
  - link:https://github.com/reitzig[reitzig] on GitHub for coding projects, and
  - link:http://reitzig.github.io/[reitzig.github.io], for computer science things (which rests, alas, mostly abandoned).
 
