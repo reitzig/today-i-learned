@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.67.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Hacking Cucumber: Isolating Features With Docker&nbsp;&ndash;&nbsp;Today I Learned</title><link rel="stylesheet" href="/today-i-learned/css/core.min.f61a5d6e64477ffb398369350cae8072b9119a80a6fcfdc161a19b2d01a6fd951f9d4cce08835ab1fa51f500cf6970ef.css" integrity="sha384-9hpdbmRHf/s5g2k1DK6AcrkRmoCm/P3BYaGbLQGm/ZUfnUzOCINasfpR9QDPaXDv"><meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Hacking Cucumber: Isolating Features With Docker" /><base href="https://reitzig.github.io/today-i-learned/">
+<body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/today-i-learned/"><span class="site name">Today I Learned</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/today-i-learned/tags/">Tags</a><a class="nav item" href="impressum">About</a></nav></div></span></div></section><section id="content"><div class="article-container"><section class="article header">
+    <h1 class="article title">Hacking Cucumber: Isolating Features With Docker</h1><p class="article date">2020-05-26</p></section><article class="article markdown-body"><div class="paragraph">
+<p>Instead of hacking around the missing feature-level hooks <em>in</em> Cucumber,
+we can leverage our familiar container tools from the <em>outside</em>!</p>
+</div>
+<div class="paragraph">
+<p>If you say "hell yea", you may want to skip over my mental ramp-up and
+directly to my <a href="#solution">proposed solution</a>.</p>
+</div>
+<div class="paragraph">
+<p><em>Disclaimer:</em> I do not have tons of experience with Cucumber.
+This post is a distillate of layman-expert frustrations that I see mirrored in many places online.
+There may be better solutions to the problem I'm about to describe,
+including using a tool more suited to the tests I want to write.</p>
+</div>
+<div class="sect1">
+<h2 id="_the_problem">The Problem</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://cucumber.io/docs/gherkin/">Gherkin</a>'s
+<code>Feature</code> is just &#8230;&#8203; not a first-class entity in
+  <a href="https://cucumber.io/docs/cucumber/">Cucumber</a>:
+The steps you write in <code>Background</code> are simply copied down to every <code>Scenario</code>.
+Same for the existing
+  <a href="https://cucumber.io/docs/cucumber/api/#hooks">hooks</a>:
+they all trigger for each <code>Scenario</code>.
+While that makes for a very simple and clear runtime model, it has its limits.</p>
+</div>
+<div class="paragraph">
+<p>By far the biggest issue for me is <em>speed</em>.
+I do not use Cucumber for glorified unit tests but for system-level tests;
+any step may include file, database, or network I/O.
+Thus, shared test setup is crucial:
+Even in my tiny hobby project, I run &gt;100 scenarios.
+If setup takes just 1s (it's more), that amounts to &gt;99s overhead&#8201;&#8212;&#8201;for ~30s of tests!</p>
+</div>
+<div class="paragraph">
+<p>Of course, balancing test isolation versus execution speed is a problem inherent to testing,
+and not at all exclusive to Cucumber.
+Bridging the gap between declaring intent and executing tests <em>is</em> a problem that every testing framework struggles with.
+That said, Cucumber seems to specifically prevent building bridges over that gap, and
+maintainers of Cucumber are on record saying that, no, this is as intended,
+and if you have this problem you are using it wrong (e.g.
+  <a href="https://github.com/cucumber/cucumber-ruby/issues/678#issuecomment-43198445">here</a>).</p>
+</div>
+<div class="paragraph">
+<p>Well.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_possible_hacks">Possible Hacks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Coming from frameworks like JUnit, us developer types are used to something like a
+<code>BeforeAll</code>/<code>AfterAll</code> hook pair scoped to files, classes, or a similar unit of grouping;
+Cucumber (only) has the equivalent of <code>BeforeEach</code>/<code>AfterEach</code>.
+Lifting this to <code>BeforeAll</code> is not too hard by making the hook idempotent:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby">Before do
+  if setup_needed?
+    perform_setup
+  end
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I actually prefer to make the setup explicit in Gherkin <code>Background</code>,
+so I did</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby">Given 'set up' do
+  if setup_needed?
+    perform_setup
+  end
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This has the added benefit of being able to pass feature- and/or scenario-specific values
+(note how <code>Before</code> can not even access the scenario, let alone the feature!)
+and providing more opportunity for modularization and re-use than hooks.</p>
+</div>
+<div class="paragraph">
+<p>Now, if <code>setup_needed?</code> is significantly faster than <code>perform_setup</code>&#8201;&#8212;&#8201;a global property could be used, if all else fails&#8201;&#8212;&#8201;this solves the setup cost problem.</p>
+</div>
+<div class="paragraph">
+<p>But how do we tear down a setup in an orderly way so the next <code>Feature</code> can start from scratch?
+There is not even an equivalent to <code>Background</code> in Gherkin!
+Without slapping tear-down on "the last" scenario
+(preventing clear test documents <em>and</em> parallel test execution)
+either explicitly or counting, there does not seem to be a way.
+The best the community has to offer seems to be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby">at_exit do
+  tear_down
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This goes directly to the Ruby kernel, though, and can not be controlled per feature.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interlude_wrapping_cucumber">Interlude: Wrapping Cucumber</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After writing the <em>next</em> section, I realized I needed to get an intermediate case out of my brain:
+If Cucumber does not support isolating features, we can sure help it along:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">for f in features/*.feature; do
+  cucumber "$f"
+done</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, the workarounds mentioned above <em>do</em>, kinda, work per feature.
+If setup and tear-down are feasible (or preferable) to do outside of the test framework,
+one might even go one step further:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">setup/before_all.sh
+
+for f in features/*.feature; do
+  feature=$(basename "${f}" '.feature')
+
+  if [ -f setup/before_${feature}.sh ]; then
+    setup/before_${feature}.sh
+  fi
+
+  cucumber "$f"
+
+  if [ -f setup/after_${feature}.sh ]; then
+    setup/after_${feature}.sh
+  fi
+done
+
+setup/after_all.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And if you're not willing&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>I for one do not appreciate moving test logic out of the test code. Smells.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_isolation_on_platform_level"><a id="solution"></a>Isolation on Platform Level</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I use Docker to run my tests in order to isolate them from my machine&#8201;&#8212;&#8201;each test may mess with my system, and I <em>really</em> do not want to write <code>after_all.sh</code>&#8201;&#8212;&#8201;so why not isolate features on <em>that</em> level? Here goes (sketch):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-Dockerfile" data-lang="Dockerfile">FROM ruby:2.5.8-slim-buster
+
+WORKDIR app
+COPY Gemfile ./
+RUN bundle install \
+ &amp;&amp; rm Gemfile
+
+COPY . ./
+WORKDIR app/test
+ENTRYPOINT ["cucumber"]
+CMD []</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Easy enough:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">docker build -t my-project-tests -f test/Dockerfile . \
+  &amp;&amp; docker run --rm my-project-tests</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I tied this into IDEA and I do not perceive any overhead;
+rebuilding the last few layers after code changes is blazing fast.
+For reference, in my case this <code>docker run</code> runs about ~55s.
+Now, looping like above <em>does</em> add some overhead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">for f in features/*.feature; do
+    docker run --rm my-project-tests "$f"
+done</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This ran for ~75s.
+I attribute most of that to one scenario having to actually set up something it would "borrow" in a single run;
+that is, the cost here is from isolation, not using Docker.
+Indeed, moving this shared setup to <code>Dockerfile</code>, I get ~38s for both single and loopy run!</p>
+</div>
+<div class="sect2">
+<h3 id="_summary">Summary</h3>
+<div class="paragraph">
+<p>So what does this give us?</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Runs of the individual features are perfectly isolated (up to shared resources outside of the containers, of course):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>No <code>after_</code> hooks/scripts necessary beyond scenario level, at all.</p>
+</li>
+<li>
+<p>Neither dependency nor impact on the host machine.</p>
+</li>
+<li>
+<p>No accidental interference between tests.</p>
+</li>
+<li>
+<p>Features can be tested in parallel by default. Indeed:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">for f in features/*.feature; do
+    docker run --rm my-project-tests "${f}" &amp;
+done
+wait &lt; &lt;(jobs -p)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>drops the above down to ~18s, with ~15s being the longest individual run!<br>
+(This is on my Linux machine with #cores &gt; #features, so YMMV.)</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>(Shared) Setup can be moved to (base-)image build time.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I think this approach has quite some potential!
+One can easily imagine having one <code>Dockerfile</code> per feature and/or
+using other sub-setting features of Cucumber to fine-tune the trade-off between isolation and running time even further.</p>
+</div>
+<div class="paragraph">
+<p>The biggest challenge, I expect, is clarity:
+Ideally, we would <em>see</em> all setup in the Gherkin files;
+as far as it is relevant on the behaviour/domain level, anyway.
+Maybe, with some experience, a container-driven runner for Cucumber could be built?</p>
+</div>
+</div>
+</div>
+</div></article><section class="article labels"><a class="tag" href=/today-i-learned/tags/tool/>Tool</a><a class="tag" href=/today-i-learned/tags/testing/>Testing</a><a class="tag" href=/today-i-learned/tags/performance/>Performance</a></section></div>
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/"><span class="li iconfont icon-article"></span>Kotlin Native in UBI</a></p></section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">    © 2020 Raphael Reitzig
+    <br />
+    This work is licensed under a 
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        Creative Commons Attribution 4.0 International License
+    </a>.
+    <br />
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        <img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+    </a>
+</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></body>
+
+</html>

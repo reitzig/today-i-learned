@@ -17,10 +17,40 @@
         &lt;img alt=&#39;Creative Commons License&#39; style=&#39;border-width:0&#39; src=&#39;cc-by-80x15.png&#39; /&gt;
     &lt;/a&gt;
 </copyright>
-    <lastBuildDate>Wed, 20 May 2020 10:42:16 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2020 12:51:10 +0200</lastBuildDate>
     
         <atom:link href="/today-i-learned/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Performance</title>
+      <link>/today-i-learned/tags/performance/</link>
+      <pubDate>Tue, 26 May 2020 12:51:10 +0200</pubDate>
+      
+      <guid>/today-i-learned/tags/performance/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Testing</title>
+      <link>/today-i-learned/tags/testing/</link>
+      <pubDate>Tue, 26 May 2020 12:51:10 +0200</pubDate>
+      
+      <guid>/today-i-learned/tags/testing/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Tool</title>
+      <link>/today-i-learned/tags/tool/</link>
+      <pubDate>Tue, 26 May 2020 12:51:10 +0200</pubDate>
+      
+      <guid>/today-i-learned/tags/tool/</guid>
+      <description></description>
+      
+    </item>
     
     <item>
       <title>Containers</title>
@@ -78,16 +108,6 @@
       <pubDate>Thu, 14 May 2020 11:18:52 +0200</pubDate>
       
       <guid>/today-i-learned/tags/ansible/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>Tool</title>
-      <link>/today-i-learned/tags/tool/</link>
-      <pubDate>Thu, 14 May 2020 11:18:52 +0200</pubDate>
-      
-      <guid>/today-i-learned/tags/tool/</guid>
       <description></description>
       
     </item>

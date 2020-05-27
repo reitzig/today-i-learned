@@ -17,10 +17,23 @@
         &lt;img alt=&#39;Creative Commons License&#39; style=&#39;border-width:0&#39; src=&#39;cc-by-80x15.png&#39; /&gt;
     &lt;/a&gt;
 </copyright>
-    <lastBuildDate>Wed, 20 May 2020 10:42:16 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2020 12:51:10 +0200</lastBuildDate>
     
         <atom:link href="/today-i-learned/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hacking Cucumber: Isolating Features With Docker</title>
+      <link>/today-i-learned/posts/2020-05-26-hacking-cucumber-feature-isolation-with-docker/</link>
+      <pubDate>Tue, 26 May 2020 12:51:10 +0200</pubDate>
+      
+      <guid>/today-i-learned/posts/2020-05-26-hacking-cucumber-feature-isolation-with-docker/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Instead of hacking around the missing feature-level hooks &lt;em&gt;in&lt;/em&gt; Cucumber,
+we can leverage our familiar container tools from the &lt;em&gt;outside&lt;/em&gt;!&lt;/p&gt;
+&lt;/div&gt;</description>
+      
+    </item>
     
     <item>
       <title>Kotlin Native in UBI</title>

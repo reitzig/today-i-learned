@@ -23,6 +23,16 @@
     
     
     <item>
+      <title>Posts</title>
+      <link>/today-i-learned/posts/</link>
+      <pubDate>Tue, 26 May 2020 12:51:10 +0200</pubDate>
+      
+      <guid>/today-i-learned/posts/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
       <title>Impressum</title>
       <link>/today-i-learned/impressum/</link>
       <pubDate>Mon, 25 May 2020 13:00:00 +0200</pubDate>
@@ -32,16 +42,6 @@
  Also, this is a playground for tech I wanted to pick up: AsciiDoc, Hugo, and GitHub actions. Obviously.
  Other forms of content end up on:
    @OmegaPolice on Twitter, for commentary and trivialities,</description>
-      
-    </item>
-    
-    <item>
-      <title>Posts</title>
-      <link>/today-i-learned/posts/</link>
-      <pubDate>Wed, 20 May 2020 10:42:16 +0200</pubDate>
-      
-      <guid>/today-i-learned/posts/</guid>
-      <description></description>
       
     </item>
     
