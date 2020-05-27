@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kotlin on Today I Learned</title>
+    <link>/today-i-learned/tags/kotlin/</link>
+    <description>Recent content in Kotlin on Today I Learned</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>    © 2020 Raphael Reitzig
+    &lt;br /&gt;
+    This work is licensed under a 
+    &lt;a rel=&#39;license&#39; href=&#39;http://creativecommons.org/licenses/by/4.0/&#39;&gt;
+        Creative Commons Attribution 4.0 International License
+    &lt;/a&gt;.
+    &lt;br /&gt;
+    &lt;a rel=&#39;license&#39; href=&#39;http://creativecommons.org/licenses/by/4.0/&#39;&gt;
+        &lt;img alt=&#39;Creative Commons License&#39; style=&#39;border-width:0&#39; src=&#39;cc-by-80x15.png&#39; /&gt;
+    &lt;/a&gt;
+</copyright>
+    <lastBuildDate>Wed, 20 May 2020 10:42:16 +0200</lastBuildDate>
+    
+        <atom:link href="/today-i-learned/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kotlin Native in UBI</title>
+      <link>/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/</link>
+      <pubDate>Wed, 20 May 2020 10:42:16 +0200</pubDate>
+      
+      <guid>/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Does Kotlin Native compile and run on RedHat&#39;s Universal Base Image (UBI)?&lt;/p&gt;
+&lt;/div&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

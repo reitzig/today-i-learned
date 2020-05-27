@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.67.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Manage IDEA Changelists for Bad Lines&nbsp;&ndash;&nbsp;Today I Learned</title><link rel="stylesheet" href="/today-i-learned/css/core.min.531e8bb19931b77253da9fca39b84cfec17160aa89387ac9eb2f3527efa99ff152d49f3646efb288dbf95b877f53adb8.css" integrity="sha384-Ux6LsZkxt3JT2p/KObhM/sFxYKqJOHrJ6y81J&#43;&#43;pn/FS1J82Ru&#43;yiNv5W4d/U624"><meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Manage IDEA Changelists for Bad Lines" /><base href="https://reitzig.github.io/today-i-learned">
+<body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/today-i-learned/"><span class="site name">Today I Learned</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/today-i-learned/tags/">Tags</a><a class="nav item" href="impressum">About</a></nav></div></span></div></section><section id="content"><div class="article-container"><section class="article header">
+    <h1 class="article title">Manage IDEA Changelists for Bad Lines</h1><p class="article date">2020-04-22</p></section><article class="article markdown-body"><div class="paragraph">
+<p>How do <em>you</em> handle not committing these bits and pieces the reviewers do not want to see?</p>
+</div>
+<div class="paragraph">
+<p>Be it credentials or custom configuration for your local development environment:
+Not all changes you make to files should be committed.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>Partial Commits</strong></dt>
+<dd>
+<p>Staging resp. committing only parts of files is a useful feature of Git in that regard.
+On the command line, add the <code>-p</code> option when staging or committing.
+Good visual clients such as IDEA also support this.</p>
+</dd>
+</dl>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="img/2020-05-07-partial-commit.png"><img src="img/2020-05-07-partial-commit.png" alt="Partial commit UI in IDEA"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>One problems remains, though: you have to repeat the exclusion for every commit.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>Changelists</strong></dt>
+<dd>
+<p>IDEA has this concept that seems almost redundant when using Git, but here it helps us.
+You can think of them as similar to Git stashes, but a bit more flexible.
+In this context, the important thing is that you can selectively exclude changes from commits,
+even if you commit changes in the same file.</p>
+</dd>
+</dl>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="img/2020-05-07-commit-with-changelists.png"><img src="img/2020-05-07-commit-with-changelists.png" alt="Commit with changelists"></a>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>Gutter UI</strong></dt>
+<dd>
+<p>And this got me excited today: Whenever you click on the gutter stripe indicating a change,
+you can move that chunk to a separate changelist.
+This is way more robust than interactive commits:
+I can decide not to commit a change <em>while working</em>,
+and I can not forget later to exclude it.</p>
+</dd>
+</dl>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="img/2020-05-07-gutter-ui.png"><img src="img/2020-05-07-gutter-ui.png" alt="Gutter UI to move change to changelist"></a>
+</div>
+</div></article><section class="article labels"><a class="tag" href=/today-i-learned/tags/tool/>Tool</a><a class="tag" href=/today-i-learned/tags/intellij-idea/>Intellij IDEA</a><a class="tag" href=/today-i-learned/tags/git/>Git</a></section></div>
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/today-i-learned/posts/2020-04-24-navigating-slack/"><span class="li iconfont icon-article"></span>Navigating Slack</a></p><p><a class="link" href="/today-i-learned/posts/2020-04-21-docker-space-usage/"><span class="li iconfont icon-article"></span>Display Docker Space Usage</a></p></section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">    © 2020 Raphael Reitzig
+    <br />
+    This work is licensed under a 
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        Creative Commons Attribution 4.0 International License
+    </a>.
+    <br />
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        <img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+    </a>
+</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></body>
+
+</html>

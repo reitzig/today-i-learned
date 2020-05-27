@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.67.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Display Docker Space Usage&nbsp;&ndash;&nbsp;Today I Learned</title><link rel="stylesheet" href="/today-i-learned/css/core.min.531e8bb19931b77253da9fca39b84cfec17160aa89387ac9eb2f3527efa99ff152d49f3646efb288dbf95b877f53adb8.css" integrity="sha384-Ux6LsZkxt3JT2p/KObhM/sFxYKqJOHrJ6y81J&#43;&#43;pn/FS1J82Ru&#43;yiNv5W4d/U624"><meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Display Docker Space Usage" /><base href="https://reitzig.github.io/today-i-learned">
+<body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/today-i-learned/"><span class="site name">Today I Learned</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/today-i-learned/tags/">Tags</a><a class="nav item" href="impressum">About</a></nav></div></span></div></section><section id="content"><div class="article-container"><section class="article header">
+    <h1 class="article title">Display Docker Space Usage</h1><p class="article date">2020-04-21</p></section><article class="article markdown-body"><div class="paragraph">
+<p>Command <code>docker system df</code> lists how much disk space Docker uses up,
+and for what.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ docker system df
+TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
+Images              23                  7                   10.46GB             9.495GB (90%)
+Containers          7                   7                   7.755GB             0B (0%)
+Local Volumes       4                   4                   100.6MB             0B (0%)
+Build Cache         0                   0                   0B                  0B</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you need a more detailed breakdown, option <code>-v</code> is there for you (output truncated):</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ docker system df -v
+Images space usage:
+
+REPOSITORY                          TAG                            IMAGE ID            CREATED              SIZE                SHARED SIZE         UNIQUE SIZE         CONTAINERS
+&lt;none&gt;                              &lt;none&gt;                         0aae9c14d0a5        25 hours ago         1.018GB             1.016GB             1.955MB             0
+exasol/docker-db                    6.2.5-d1                       5351441714d5        4 weeks ago          4.309GB             4.309GB             0B                  0
+minio/minio                         RELEASE.2020-02-27T00-23-05Z   5836a22e6092        7 weeks ago          54MB                54MB                0B                  0
+python                              3.7-stretch                    3fcd43e567d1        8 weeks ago          941.3MB             0B                  941.3MB             0
+postgres                            12.2-alpine                    401832474328        2 months ago         153.6MB             153.6MB             0B                  1
+python                              3.7-slim-stretch               89411a8b761c        2 months ago         155.3MB             155.3MB             0B                  0
+alpine                              3.11                           e7d92cdc71fe        3 months ago         5.591MB             5.591MB             0B                  0
+puckel/docker-airflow               1.10.7                         122ab2c6aeb9        3 months ago         741.3MB             741.3MB             0B                  0
+antora/antora                       latest                         5711eb60c7f8        5 months ago         90.88MB             0B                  90.88MB             0
+localstack/localstack               0.10.2                         b3d3f7b06b7d        8 months ago         860.2MB             0B                  860.2MB             0
+alpine                              3.10.1                         b7b28af77ffe        9 months ago         5.582MB             0B                  5.582MB             0
+localstack/localstack               0.9.4                          5c6c5a293024        11 months ago        1.291GB             0B                  1.291GB             0
+quay.io/testcontainers/ryuk         0.2.3                          64849fd2d464        14 months ago        10.69MB             0B                  10.69MB             0
+alpine                              3.5                            f80194ae2e0c        14 months ago        3.996MB             0B                  3.996MB             0
+
+Containers space usage:
+
+CONTAINER ID        IMAGE                               COMMAND                  LOCAL VOLUMES       SIZE                CREATED              STATUS                        NAMES
+1a633294607d        minio/minio                         "/bin/sh -c '(cd /da…"   1                   0B                  About a minute ago   Up About a minute (healthy)   local-s3_1
+3b09421e9ab7        postgres:12.2-alpine                "docker-entrypoint.s…"   1                   63B                 About a minute ago   Up About a minute (healthy)   postgres_1
+
+Local Volumes space usage:
+
+VOLUME NAME                                                        LINKS               SIZE
+postgres-data                                                      1                   50.97MB
+logs                                                               1                   157.6kB
+s3-data                                                            1                   6.087kB
+979b2df08cac02b75013e6982541e99fc0fac4fa4b46c75e34dfb4580ee44a6b   1                   49.87MB
+
+Build cache usage: 0B
+
+CACHE ID            CACHE TYPE          SIZE                CREATED             LAST USED           USAGE               SHARED</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you decide there is just <em>too</em> much junk, you may be looking for <code>docker system prune</code>;
+I for one think it is usually too blunt an instrument, though.</p>
+</div></article><section class="article labels"><a class="tag" href=/today-i-learned/tags/tool/>Tool</a><a class="tag" href=/today-i-learned/tags/docker/>Docker</a><a class="tag" href=/today-i-learned/tags/devops/>DevOps</a></section></div>
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/"><span class="li iconfont icon-article"></span>Manage IDEA Changelists for Bad Lines</a></p></section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">    © 2020 Raphael Reitzig
+    <br />
+    This work is licensed under a 
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        Creative Commons Attribution 4.0 International License
+    </a>.
+    <br />
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        <img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+    </a>
+</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></body>
+
+</html>

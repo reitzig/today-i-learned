@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.67.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Authorizing Only Your Team With Ansible&nbsp;&ndash;&nbsp;Today I Learned</title><link rel="stylesheet" href="/today-i-learned/css/core.min.531e8bb19931b77253da9fca39b84cfec17160aa89387ac9eb2f3527efa99ff152d49f3646efb288dbf95b877f53adb8.css" integrity="sha384-Ux6LsZkxt3JT2p/KObhM/sFxYKqJOHrJ6y81J&#43;&#43;pn/FS1J82Ru&#43;yiNv5W4d/U624"><meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Authorizing Only Your Team With Ansible" /><base href="https://reitzig.github.io/today-i-learned">
+<body><section id="header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/today-i-learned/"><span class="site name">Today I Learned</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/today-i-learned/tags/">Tags</a><a class="nav item" href="impressum">About</a></nav></div></span></div></section><section id="content"><div class="article-container"><section class="article header">
+    <h1 class="article title">Authorizing Only Your Team With Ansible</h1><p class="article date">2020-05-14</p></section><article class="article markdown-body"><div class="paragraph">
+<p>Authorizing SSH keys with Ansible is made easy by the <code>authorized_key</code> module.
+Or is it?</p>
+</div>
+<div class="paragraph">
+<p>In the most simple case, we just want to authorize a single key, say the one of the current user:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">- name: Authorize me
+  authorized_key:
+    user: "john_doe"
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+    state: present</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, in our project we wanted to authorize multiple team members for a shared account,
+potentially with differences between hosts.
+So we put public keys in the playbook repository and did something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">- name: Authorize team
+  authorized_key:
+    user: "team_doe"
+    key: "{{ lookup('file', item) }}"
+    state: present
+  with_fileglob:
+    - "config/{{ inventory_dir | basename }}/ssh_keys/*.pub"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is nice, but has a fatal flaw:
+We do not de-authorize keys when we remove them from the playbook!
+In case of a single key, we would solve this by adding <code>exclusive: true</code> but, alas,
+this is
+    <a href="https://docs.ansible.com/ansible/2.9/modules/authorized_key_module.html#parameter-exclusive">not possible here</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+This option is not loop aware, so if you use <code>with_</code>, it will be exclusive per iteration of the loop.
+If you want multiple keys in the file you need to pass them all to key in a single batch as mentioned above.
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Therefore, we have to concatenate the key files.
+We could do this up-front and have only a single file with all keys in the playbook,
+but we prefer one file per key for transparency and maintainability reasons.
+Lucky for us, there we can also
+    <a href="https://stackoverflow.com/a/41843308/539599">assemble a multi-line string inline</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">- name: Authorize team
+  authorized_key:
+    user: "team_doe"
+    key: |
+      {% for filename in lookup('fileglob', 'config/{{ inventory_dir | basename }}/ssh_keys/*.pub', wantlist=true) -%}
+      {{ lookup('file', filename) }}
+
+      {% endfor %}
+    state: present
+    exclusive: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the extra empty line in the <code>for</code>-loop which translates into a line-break in the resulting string.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+The output of <code>ansible-playbook</code> does not seem to indicate that it removed any keys from the server.
+         You may want to check separately that the desired effect was achieved.
+</td>
+</tr>
+</table>
+</div></article><section class="article labels"><a class="tag" href=/today-i-learned/tags/tool/>Tool</a><a class="tag" href=/today-i-learned/tags/ansible/>Ansible</a><a class="tag" href=/today-i-learned/tags/devops/>DevOps</a></section></div>
+<div class="article bottom"><section class="article navigation"><p><a class="link" href="/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/"><span class="li iconfont icon-article"></span>Kotlin Native in UBI</a></p><p><a class="link" href="/today-i-learned/posts/2020-05-04-argument-types-with-click/"><span class="li iconfont icon-article"></span>Documenting Argument Types With Click</a></p></section></div></section><section id="footer"><div class="footer-wrap">
+    <p class="copyright">    © 2020 Raphael Reitzig
+    <br />
+    This work is licensed under a 
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        Creative Commons Attribution 4.0 International License
+    </a>.
+    <br />
+    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+        <img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+    </a>
+</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></body>
+
+</html>
