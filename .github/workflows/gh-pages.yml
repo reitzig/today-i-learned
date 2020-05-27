@@ -14,21 +14,25 @@ jobs:
           submodules: true
 
           # Does not provide asciidoctor out of the box :(
-          #      - name: Setup Hugo
-          #        uses: peaceiris/actions-hugo@v2
-          #        with:
-          #          hugo-version: 'latest'
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
 
-          #      - name: Build
-          #        run: hugo --minify
-          #
-      - name: Build the website to public directory
-        uses: gaol/hugo-gh-action@v1.2
+      - name: Setup asciidoctor
+        run: |
+          sudo gem update --system 3.0.6 # cf. https://github.com/rubygems/rubygems/issues/3068#issuecomment-574775885
+          sudo gem install asciidoctor
+          sudo .github/scripts/reroute_asciidoctor.sh
+          ruby --version; gem --version; asciidoctor --version
+
+      - name: Build
+        run: hugo --minify
         env:
           HUGO_ENV_PRIVATE_ADDRESS: "${{ secrets.HUGO_ENV_PRIVATE_ADDRESS }}"  
           HUGO_ENV_PRIVATE_USER:    "${{ secrets.HUGO_ENV_PRIVATE_USER }}"  
           HUGO_ENV_PRIVATE_DOMAIN:  "${{ secrets.HUGO_ENV_PRIVATE_DOMAIN }}"
-
+      
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
