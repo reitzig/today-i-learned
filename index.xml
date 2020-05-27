@@ -1,49 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Today I Learned</title>
-    <link>/today-i-learned/</link>
-    <description>Recent content on Today I Learned</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>    © 2020 Raphael Reitzig
-    &lt;br /&gt;
-    This work is licensed under a 
-    &lt;a rel=&#39;license&#39; href=&#39;http://creativecommons.org/licenses/by/4.0/&#39;&gt;
-        Creative Commons Attribution 4.0 International License
-    &lt;/a&gt;.
-    &lt;br /&gt;
-    &lt;a rel=&#39;license&#39; href=&#39;http://creativecommons.org/licenses/by/4.0/&#39;&gt;
-        &lt;img alt=&#39;Creative Commons License&#39; style=&#39;border-width:0&#39; src=&#39;cc-by-80x15.png&#39; /&gt;
-    &lt;/a&gt;
-</copyright>
-    <lastBuildDate>Mon, 25 May 2020 13:00:00 +0200</lastBuildDate>
-    
-        <atom:link href="/today-i-learned/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Posts</title>
-      <link>/today-i-learned/posts/</link>
-      <pubDate>Tue, 26 May 2020 12:51:10 +0200</pubDate>
-      
-      <guid>/today-i-learned/posts/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>Impressum</title>
-      <link>/today-i-learned/impressum/</link>
-      <pubDate>Mon, 25 May 2020 13:00:00 +0200</pubDate>
-      
-      <guid>/today-i-learned/impressum/</guid>
-      <description>This is were I drop snippets and small insights that do not fit any other format; too trivial for a blog post but too long or too structured for Twitter and the like.
- Also, this is a playground for tech I wanted to pick up: AsciiDoc, Hugo, and GitHub actions. Obviously.
- Other forms of content end up on:
-   @OmegaPolice on Twitter, for commentary and trivialities,</description>
-      
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Today I Learned</title><link>/today-i-learned/</link><description>Recent content on Today I Learned</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright> © 2020 Raphael Reitzig
+&lt;br />
+This work is licensed under a
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+Creative Commons Attribution 4.0 International License
+&lt;/a>.
+&lt;br />
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+&lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+&lt;/a></copyright><lastBuildDate>Tue, 26 May 2020 12:51:10 +0200</lastBuildDate><atom:link href="/today-i-learned/index.xml" rel="self" type="application/rss+xml"/><item><title>Posts</title><link>/today-i-learned/posts/</link><pubDate>Tue, 26 May 2020 12:51:10 +0200</pubDate><guid>/today-i-learned/posts/</guid><description/></item><item><title>Impressum</title><link>/today-i-learned/impressum/</link><pubDate>Mon, 25 May 2020 13:00:00 +0200</pubDate><guid>/today-i-learned/impressum/</guid><description>This is were I drop snippets and small insights that do not fit any other format; too trivial for a blog post but too long or too structured for Twitter and the like.
+Also, this is a playground for tech I wanted to pick up: AsciiDoc, Hugo, and GitHub actions. Obviously.
+Other forms of content end up on:
+@OmegaPolice on Twitter, for commentary and trivialities,</description></item></channel></rss>

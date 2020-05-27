@@ -1,38 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Intellij IDEA on Today I Learned</title>
-    <link>/today-i-learned/tags/intellij-idea/</link>
-    <description>Recent content in Intellij IDEA on Today I Learned</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>    © 2020 Raphael Reitzig
-    &lt;br /&gt;
-    This work is licensed under a 
-    &lt;a rel=&#39;license&#39; href=&#39;http://creativecommons.org/licenses/by/4.0/&#39;&gt;
-        Creative Commons Attribution 4.0 International License
-    &lt;/a&gt;.
-    &lt;br /&gt;
-    &lt;a rel=&#39;license&#39; href=&#39;http://creativecommons.org/licenses/by/4.0/&#39;&gt;
-        &lt;img alt=&#39;Creative Commons License&#39; style=&#39;border-width:0&#39; src=&#39;cc-by-80x15.png&#39; /&gt;
-    &lt;/a&gt;
-</copyright>
-    <lastBuildDate>Wed, 22 Apr 2020 18:57:48 +0200</lastBuildDate>
-    
-        <atom:link href="/today-i-learned/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Manage IDEA Changelists for Bad Lines</title>
-      <link>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</link>
-      <pubDate>Wed, 22 Apr 2020 18:57:48 +0200</pubDate>
-      
-      <guid>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;How do &lt;em&gt;you&lt;/em&gt; handle not committing these bits and pieces the reviewers do not want to see?&lt;/p&gt;
-&lt;/div&gt;</description>
-      
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Intellij IDEA on Today I Learned</title><link>/today-i-learned/tags/intellij-idea/</link><description>Recent content in Intellij IDEA on Today I Learned</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright> © 2020 Raphael Reitzig
+&lt;br />
+This work is licensed under a
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+Creative Commons Attribution 4.0 International License
+&lt;/a>.
+&lt;br />
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+&lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+&lt;/a></copyright><lastBuildDate>Wed, 22 Apr 2020 18:57:48 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml"/><item><title>Manage IDEA Changelists for Bad Lines</title><link>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</link><pubDate>Wed, 22 Apr 2020 18:57:48 +0200</pubDate><guid>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</guid><description>&lt;div class="paragraph">
+&lt;p>How do &lt;em>you&lt;/em> handle not committing these bits and pieces the reviewers do not want to see?&lt;/p>
+&lt;/div></description></item></channel></rss>

@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.67.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<meta name="supported-color-schemes" content="light dark"><title>Documenting Argument Types With Click&nbsp;&ndash;&nbsp;Today I Learned</title><link rel="stylesheet" href="/today-i-learned/css/core.min.f61a5d6e64477ffb398369350cae8072b9119a80a6fcfdc161a19b2d01a6fd951f9d4cce08835ab1fa51f500cf6970ef.css" integrity="sha384-9hpdbmRHf/s5g2k1DK6AcrkRmoCm/P3BYaGbLQGm/ZUfnUzOCINasfpR9QDPaXDv"><meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Documenting Argument Types With Click" /><base href="https://reitzig.github.io/today-i-learned/">
-<body><section id="header">
-    <div class="header wrap"><span class="header left-side"><a class="site home" href="/today-i-learned/"><span class="site name">Today I Learned</span></a></span>
-        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/today-i-learned/tags/">Tags</a><a class="nav item" href="impressum">About</a></nav></div></span></div></section><section id="content"><div class="article-container"><section class="article header">
-    <h1 class="article title">Documenting Argument Types With Click</h1><p class="article date">2020-05-04</p></section><article class="article markdown-body"><div class="paragraph">
-<p>Building a Python CLI interface with
-    <a href="https://click.palletsprojects.com">click</a>,
-how can I get the same argument "type" twice in usage instructions?</p>
-</div>
-<div class="paragraph">
-<p>Say we have a very simple interface that has two arguments of the same,
-and say we have implemented our own <code>ParameterType</code> for some reason:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">from typing import Optional
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.71.1"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><title>Documenting Argument Types With Click&nbsp;&ndash;&nbsp;Today I Learned</title><link rel=stylesheet href=/today-i-learned/css/core.min.f61a5d6e64477ffb398369350cae8072b9119a80a6fcfdc161a19b2d01a6fd951f9d4cce08835ab1fa51f500cf6970ef.css integrity=sha384-9hpdbmRHf/s5g2k1DK6AcrkRmoCm/P3BYaGbLQGm/ZUfnUzOCINasfpR9QDPaXDv><meta name=twitter:card content="summary"><meta name=twitter:title content="Documenting Argument Types With Click"><base href=https://reitzig.github.io/today-i-learned/><body><section id=header><div class="header wrap"><span class="header left-side"><a class="site home" href=/today-i-learned/><span class="site name">Today I Learned</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/today-i-learned/tags/>Tags</a><a class="nav item" href=impressum>About</a></nav></div></span></div></section><section id=content><div class=article-container><section class="article header"><h1 class="article title">Documenting Argument Types With Click</h1><p class="article date">2020-05-04</p></section><article class="article markdown-body"><div class=paragraph><p>Building a Python CLI interface with
+<a href=https://click.palletsprojects.com>click</a>,
+how can I get the same argument "type" twice in usage instructions?</p></div><div class=paragraph><p>Say we have a very simple interface that has two arguments of the same,
+and say we have implemented our own <code>ParameterType</code> for some reason:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-python data-lang=python>from typing import Optional
 
 import click
 
@@ -42,56 +27,14 @@ def hello(callee: str, caller: Optional[str]):
 
 
 if __name__ == '__main__':
-    hello()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note how the <code>name</code> parameter of <code>@click.argument</code> has to match the parameter name of <code>hello</code> and
-also shows up in the usage instruction:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-plaintext" data-lang="plaintext">$ python hello.py --help
-Usage: hello.py [OPTIONS] CALLEE [CALLER]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This is unfortunate in this case: it would be much clearer to see the "type" <code>NAME</code> reflected here!
+    hello()</code></pre></div></div><div class=paragraph><p>Note how the <code>name</code> parameter of <code>@click.argument</code> has to match the parameter name of <code>hello</code> and
+also shows up in the usage instruction:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-plaintext data-lang=plaintext>$ python hello.py --help
+Usage: hello.py [OPTIONS] CALLEE [CALLER]</code></pre></div></div><div class=paragraph><p>This is unfortunate in this case: it would be much clearer to see the "type" <code>NAME</code> reflected here!
 Turns out we can add
-    <a href="https://click.palletsprojects.com/en/7.x/api/#click.ParamType.get_metavar"><code>metavar</code></a>
+<a href=https://click.palletsprojects.com/en/7.x/api/#click.ParamType.get_metavar><code>metavar</code></a>
 to <code>NameParamType</code>.
-For instance:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">def get_metavar(self, param):
-    return self.name.upper()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Et voilà:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-plaintext" data-lang="plaintext">$ ../venv/bin/python hello.py --help
-Usage: hello.py [OPTIONS] NAME [NAME]</code></pre>
-</div>
-</div></article><section class="article labels"><a class="tag" href=/today-i-learned/tags/programming/>Programming</a><a class="tag" href=/today-i-learned/tags/library/>Library</a></section></div>
-<div class="article bottom"><section class="article navigation"><p><a class="link" href="/today-i-learned/posts/2020-05-14-manage-authorized-ssh-keys-with-ansible/"><span class="li iconfont icon-article"></span>Authorizing Only Your Team With Ansible</a></p><p><a class="link" href="/today-i-learned/posts/2020-04-28-rescue-a-lost-commit/"><span class="li iconfont icon-article"></span>Rescue a Lost Commit</a></p></section></div></section><section id="footer"><div class="footer-wrap">
-    <p class="copyright">    © 2020 Raphael Reitzig
-    <br />
-    This work is licensed under a 
-    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
-        Creative Commons Attribution 4.0 International License
-    </a>.
-    <br />
-    <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
-        <img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
-    </a>
-</p>
-    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
-        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
-        target="_blank">Notepadium</a></p>
-</div></section><script src="/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></body>
-
-</html>
+For instance:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-python data-lang=python>def get_metavar(self, param):
+    return self.name.upper()</code></pre></div></div><div class=paragraph><p>Et voilà:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-plaintext data-lang=plaintext>$ ../venv/bin/python hello.py --help
+Usage: hello.py [OPTIONS] NAME [NAME]</code></pre></div></div></article><section class="article labels"><a class=tag href=/today-i-learned/tags/programming/>Programming</a><a class=tag href=/today-i-learned/tags/library/>Library</a></section></div><div class="article bottom"><section class="article navigation"><p><a class=link href=/today-i-learned/posts/2020-05-14-manage-authorized-ssh-keys-with-ansible/><span class="li iconfont icon-article"></span>Authorizing Only Your Team With Ansible</a></p><p><a class=link href=/today-i-learned/posts/2020-04-28-rescue-a-lost-commit/><span class="li iconfont icon-article"></span>Rescue a Lost Commit</a></p></section></div></section><section id=footer><div class=footer-wrap><p class=copyright>© 2020 Raphael Reitzig<br>This work is licensed under a
+<a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License
+</a>.<br><a rel=license href=http://creativecommons.org/licenses/by/4.0/><img alt="Creative Commons License" style=border-width:0 src=cc-by-80x15.png></a></p><p class=powerby><span>Powered by </span><a href=https://gohugo.io target=_blank>Hugo</a><span> and the </span><a href=https://themes.gohugo.io/hugo-notepadium/ target=_blank>Notepadium</a></p></div></section><script src=/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js integrity=sha384-B5k0ipHc4Sxr5Kc/lDz+ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU></script><script>hljs.initHighlightingOnLoad();</script></body></html>
