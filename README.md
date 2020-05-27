@@ -13,10 +13,6 @@ to enable the Git hooks included in this repository, for the current clone of th
 ### Serve
 
 ```bash
-export HUGO_ENV_PRIVATE_ADDRESS="..."
-export HUGO_ENV_PRIVATE_USER="..."
-export HUGO_ENV_PRIVATE_DOMAIN="..."
-
 export PATH="${PWD}:${PATH}"
 hugo server -D
 ```

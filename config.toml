@@ -1,4 +1,4 @@
-baseURL = "https://reitzig.github.io/today-i-learned"
+baseURL = "https://reitzig.github.io/today-i-learned/"
 title = "Today I Learned"
 languageCode = "en-us"
 copyright = """
