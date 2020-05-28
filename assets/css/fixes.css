@@ -28,3 +28,9 @@ span.keyseq kbd {
     top: -.1em;
     white-space: nowrap;
 }
+
+/* Workaround --> https://github.com/cntrump/hugo-notepadium/pull/88 */
+@font-face {
+    font-family: "iconfont";
+    src: url('{{- site.BaseURL -}}/assets/font/iconfont.ttf?t=1588390362269') format('truetype');
+}
