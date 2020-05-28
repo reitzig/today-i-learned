@@ -21,7 +21,7 @@
    Thank you, Font Awesome! */
 @font-face {
     font-family: "admonition_icons";
-    src: url('../admonition_icons.ttf') format('truetype');
+    src: url('{{- .Site.BaseURL -}}/assets/font/admonition_icons.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

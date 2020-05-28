@@ -1,3 +1,6 @@
 /public
+/resources
+/data
+
 *.bak
 /.env
