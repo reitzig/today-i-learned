@@ -1,4 +1,4 @@
-name: GitHub Pages
+name: Deploy GitHub Pages
 
 on:
   push:
@@ -13,18 +13,21 @@ jobs:
         with:
           submodules: true
 
-          # Does not provide asciidoctor out of the box :(
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
       - name: Setup asciidoctor
-        run: |
-          sudo gem update --system 3.0.6 # cf. https://github.com/rubygems/rubygems/issues/3068#issuecomment-574775885
-          sudo gem install asciidoctor
-          sudo .github/scripts/reroute_asciidoctor.sh
-          ruby --version; gem --version; asciidoctor --version
+        uses: reitzig/actions-asciidoctor@master
+        # TODO: @v1
+        with:
+          options: "-a experimental=true -a icons=font"
 
       - name: Build
         run: hugo --minify
