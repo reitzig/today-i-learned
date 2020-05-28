@@ -18,7 +18,6 @@ theme = "hugo-notepadium"
 
 [params]
 #slogan = "Lesson of the day"
-internalIconfont = true
 license = ""
 
 [params.nav]
