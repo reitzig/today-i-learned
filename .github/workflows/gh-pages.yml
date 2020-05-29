@@ -29,8 +29,8 @@ jobs:
           ruby-version: 2.7
 
       - name: Setup asciidoctor
-        uses: reitzig/actions-asciidoctor@master
-        # TODO: @v1
+        uses: reitzig/actions-asciidoctor@tinker-hugo-integration
+        # TODO: change to @v1 after release
         with:
           options: "-a experimental=true -a icons=font"
 
