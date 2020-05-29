@@ -2,13 +2,11 @@ name: GitHub Pages
 
 on:
   push:
-    branches:
-      - master
-    pull_request:
-      types:
-        - opened
-        - synchronize
-        - reopened
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   deploy:
@@ -39,6 +37,7 @@ jobs:
           HUGO_ENV_PRIVATE_DOMAIN:  "${{ secrets.HUGO_ENV_PRIVATE_DOMAIN }}"
       
       - name: Deploy
+        if: github.ref == 'refs/heads/master' && github.event.repository.fork == false
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
