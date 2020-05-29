@@ -1,0 +1,77 @@
+---
+title: "Using Build Tools From Containers"
+date: 2020-05-29T17:38:45+02:00
+tags: ["Programming", "Docker", "Tool"]
+---
+
+You have to use a build tool that you do not want on your machine -- what to do?
+Run it from a container, of course!
+<!--more-->
+
+Fact: I do not like the JavaScript ecosystem, 
+so I do not want to install `+npm+` and the like only because someone forces me to use it.
+For other tools or use cases, there may be more objective concerns.
+The question remains the same: How do I use a tool I can or will not install?
+
+Here is an idea:
+
+. Start a container with the tool and its dependencies; 
+  most modern tools have images for CI pipelines.
+. Bind-mount the project directory into it.
+. Run the commands as you would usually do, but _in_ the container.
+
+This is, of course, not a novel idea; 
+one half of GitHub Actions rests on this approach, after all.
+Wrapping it up so that it is easy to adopt and use holds some interest for me, though.
+
+Specifically, for the example for Node.js, I created a Bash script `+$+` along the lines of this:
+
+```bash
+if ! container_exists "${container_name}"; then
+    docker run \
+        --detach --rm \
+        --name "${container_name}" \
+        -v "$PWD":/usr/src/app \
+        -w /usr/src/app \
+        node:12-slim \
+        tail -f /dev/null # block
+fi
+
+docker exec -it \
+    -w /usr/src/app \
+    "${container_name}" \
+    "${@}"
+```
+
+[NOTE]
+====
+I left out some fluff parts, and
+I also added some setup code to the container creation part for convenience.
+
+Full source: link:https://gist.github.com/reitzig/3b41025ed3d3ebc12e49fa692a6055da[Gist]
+====
+
+So the first call would start the container 
+-- which is quick once you have the image --
+taking care to keep it alive.
+Then we just forward all parameters, 
+including the actual command we want to run,
+to the containers.
+
+I used it like so (in an existing project):
+
+```bash
+./$ npm install
+./$ ncc index.js
+```
+
+IMPORTANT: All project files will be generated _outside_ of the container; 
+           you will have to `+.gitignore+` and clean up just like you usually would.
+           Do not forget `+docker kill $container_name+` either!
+
+Future work:
+
+- Have the container automatically shut down after some idle time.
+- Generalize the script to make it a proper tool.
+  (I solved a similar problem once link:https://github.com/reitzig/texlive-docker[before].)
+- Use a container runner that does not create files with `+root:root+` ownership.
