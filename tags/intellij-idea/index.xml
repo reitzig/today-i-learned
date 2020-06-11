@@ -7,6 +7,18 @@ Creative Commons Attribution 4.0 International License
 &lt;br />
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
-&lt;/a></copyright><lastBuildDate>Wed, 22 Apr 2020 18:57:48 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml"/><item><title>Manage IDEA Changelists for Bad Lines</title><link>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</link><pubDate>Wed, 22 Apr 2020 18:57:48 +0200</pubDate><guid>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</guid><description>&lt;div class="paragraph">
+&lt;/a></copyright><lastBuildDate>Thu, 11 Jun 2020 21:28:53 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml"/><item><title>Sane YAML With JSON Schema</title><link>/today-i-learned/posts/2020-06-11-sane-yaml-with-json-schema/</link><pubDate>Thu, 11 Jun 2020 21:28:53 +0200</pubDate><guid>/today-i-learned/posts/2020-06-11-sane-yaml-with-json-schema/</guid><description>&lt;div class="paragraph">
+&lt;p>Most popular CI/CD systems use YAML as input language for their pipelines.
+Debugging pipelines is always annoying due to long feedback cycles,
+but I get particularly upset if the reason for failure is malformed YAML.&lt;/p>
+&lt;/div>
+&lt;div class="imageblock">
+&lt;div class="content">
+&lt;img src="img/2020-06-11-json-schema-for-yaml-0.png" alt="GitHub Actions syntax error">
+&lt;/div>
+&lt;/div>
+&lt;div class="paragraph">
+&lt;p>How do I stay sane?&lt;/p>
+&lt;/div></description></item><item><title>Manage IDEA Changelists for Bad Lines</title><link>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</link><pubDate>Wed, 22 Apr 2020 18:57:48 +0200</pubDate><guid>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</guid><description>&lt;div class="paragraph">
 &lt;p>How do &lt;em>you&lt;/em> handle not committing these bits and pieces the reviewers do not want to see?&lt;/p>
 &lt;/div></description></item></channel></rss>
