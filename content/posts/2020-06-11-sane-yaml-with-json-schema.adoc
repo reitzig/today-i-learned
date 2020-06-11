@@ -2,6 +2,7 @@
 title: "Sane YAML With JSON Schema"
 date: 2020-06-11T21:28:53+02:00
 tags: ["Tool", "JSON Schema", "Intellij IDEA", "Programming"]
+tweet: ["OmegaPolice", "1271198064951386118"]
 ---
 
 Most popular CI/CD systems use YAML as input language for their pipelines.

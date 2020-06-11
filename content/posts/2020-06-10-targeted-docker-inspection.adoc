@@ -2,6 +2,7 @@
 title: "Targeted Docker Inspection"
 date: 2020-06-10T19:05:44+02:00
 tags: ["Tool", "Docker"]
+tweet: ["OmegaPolice", "1271171835904905216"]
 ---
 
 How do you get basic information about Docker containers in a script?
