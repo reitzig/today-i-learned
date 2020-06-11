@@ -8,6 +8,11 @@
     margin-bottom: 1ex;
 }
 
+/* Draw a subtle border around images for clarity */
+.article.markdown-body div.imageblock img {
+    border: 1px solid #ccc;
+}
+
 /* I prefer a keyboard-ey look over the code-ey look. */
 span.keyseq kbd {
     font-family: Menlo,Consolas,liberation mono,monospace;

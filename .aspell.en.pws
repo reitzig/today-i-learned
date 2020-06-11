@@ -1,12 +1,16 @@
-personal_ws-1.1 en 17 
+personal_ws-1.1 en 22 
 UI
 Impressum
 Dockerfile
 modularization
 OpenShift
+Jetbrains
+whitespace
 Intellij
 AsciiDoc
 Kotlin
+YAML
+IDEs
 runtime
 Ansible
 changelists
@@ -14,5 +18,6 @@ DevOps
 changelist
 JSON
 JUnit
+schemas
 OmegaPolice
 RedHat

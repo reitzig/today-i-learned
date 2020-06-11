@@ -1,0 +1,74 @@
+---
+title: "Sane YAML With JSON Schema"
+date: 2020-06-11T21:28:53+02:00
+tags: ["Tool", "JSON Schema", "Intellij IDEA", "Programming"]
+---
+
+Most popular CI/CD systems use YAML as input language for their pipelines.
+Debugging pipelines is always annoying due to long feedback cycles,
+but I get particularly upset if the reason for failure is malformed YAML.
+
+image::img/2020-06-11-json-schema-for-yaml-0.png[GitHub Actions syntax error]
+
+How do I stay sane?
+<!--more-->
+
+Lucky for me, there is
+  link:https://json-schema.org/[JSON Schema].
+More to the point,
+
+ - there are 
+     link:https://www.schemastore.org/json/[schemas for many popular interfaces],
+ - they apply to YAML without changes, and
+ - Jetbrains built 
+     link:https://www.jetbrains.com/help/idea/json.html#[first-level support]
+   into their IDEs.
+
+Here is what that looks like for
+  link:https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions[GitHub Actions workflows]
+as just one example.
+
+. Open your Most Painful YAML and notice a small, innocuous label at the bottom:
++
+image::img/2020-06-11-json-schema-for-yaml-1.png[GitHub Actions syntax error]
++
+It is _actually_ a button -- click it!
++
+TIP: If you don\'t see this, link:img/2020-06-11-json-schema-for-yaml-6.png[check your settings].
+
+. Start typing the type of thing at hand and see if a schema is available:
++
+image::img/2020-06-11-json-schema-for-yaml-2.png[GitHub Actions syntax error]
+
+. Visit the Schema Mappings dialog to add custom schemas and 
+fine-tune your configuration:
++
+image::img/2020-06-11-json-schema-for-yaml-3.png[GitHub Actions syntax error]
++
+Note how I told IDEA to match all files in `+.github/workflows+` to the appropriate schema.
+
+While by no means perfect -- especially if the published schema does not quite match what you need,
+or is written badly -- there are some immediate benefits. Wrong indentation after copy-pasting?
+Highlighted:
+
+image::img/2020-06-11-json-schema-for-yaml-4.png[GitHub Actions syntax error]
+
+Not the most obvious error message 
+-- thanks, everything-goes YAML syntax! --
+but at least we know something is wrong!
+We even get syntax completion and,
+if the schema contains it,
+inline documentation:
+
+image::img/2020-06-11-json-schema-for-yaml-5.png[GitHub Actions syntax error]
+
+Very cool!
+If anyone ever asks me why they should create schemas for their interface,
+this here is one very concrete value I will point to.
+
+CAUTION: In case you hadn\'t noticed:
+         I do _not_ like YAML. It is a time-sink without end.
+         Whoever decided that whitespace should be part of any formal syntax needs to be ... given a stern talking-to.
+         And here it\'s even worse than, say, for Python,
+         since almost any way to indent is valid YAML and means _something_!
+         But the _structure_ needs to be just right for the consumer to accept it ...
