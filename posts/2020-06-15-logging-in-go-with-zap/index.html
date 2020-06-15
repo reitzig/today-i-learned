@@ -1,0 +1,38 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.72.0"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><title>Logging in Go With Zap&nbsp;&ndash;&nbsp;Today I Learned</title><link rel=stylesheet href=/today-i-learned/css/core.min.f41080f710a61df3b0b09b6cb4cfd0812511c11f38f860c19b07f5c340b13f4fbf39bfba8b973a2115ea4c2686310997.css integrity=sha384-9BCA9xCmHfOwsJtstM/QgSURwR84+GDBmwf1w0CxP0+/Ob+6i5c6IRXqTCaGMQmX><meta name=twitter:card content="summary"><meta name=twitter:title content="Logging in Go With Zap"><base href=https://reitzig.github.io/today-i-learned/><link rel=icon href="data:;base64,="><body><section id=header><div class="header wrap"><span class="header left-side"><a class="site home" href=/today-i-learned/><span class="site name">Today I Learned</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/today-i-learned/tags/>Tags</a><a class="nav item" href=impressum>About</a></nav></div></span></div></section><section id=content><div class=article-container><section class="article header"><h1 class="article title">Logging in Go With Zap</h1><p class="article date">2020-06-15</p></section><article class="article markdown-body"><div class=paragraph><p>I'm still getting used to developing native applications,
+and Go logging was a challenge for me:
+How do I get different logging output in tests and production?</p></div><div class=paragraph><p>Writing a
+<a href=https://github.com/reitzig/container-do>human-facing CLI application</a>,
+here is what I want from logging:</p></div><div class=ulist><ul><li><p>log levels;</p></li><li><p>human-readable messages, always;</p></li><li><p>high verbosity during tests, including timestamps;</p></li><li><p>lower verbosity in production, only actionable output.</p></li></ul></div><div class=paragraph><p>Go's
+<a href=https://golang.org/pkg/log/>built-in logging</a>
+does not seem the have all of these features,
+or maybe I did not see them due to its rather arcane API.</p></div><div class=paragraph><p>A quick search leads to
+<a href=https://github.com/uber-go/zap>zap</a>,
+"blazing fast, structured, leveled logging in Go".
+Test logging works immediately as advertised:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-go data-lang=go>logger, _ := zap.NewDevelopment()
+logger.Sugar().Debugf("Parsed config: %+v", config)
+
+//&gt; 2020-06-15T21:41:06.109+0200	DEBUG	app.go:77	Parsed config: { ... }</code></pre></div></div><div class=paragraph><p>Very cool, that is exactly what we need in test logs!
+Production logging, on the other hand, is not an immediate fit:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-go data-lang=go>logger, _ = zap.NewProduction()
+logger.Warn("Oh no!")
+
+//&gt; {"level":"warn","ts":1592250230.533966,"caller":"app.go:77","msg":"Oh no!"}</code></pre></div></div><div class=paragraph><p>While JSON logs are very useful when running services with log aggregation,
+we need something else for CLI tools.
+Now, <code>NewProduction</code> <em>does</em> take <code>Option</code> parameters,
+but I could not figure out how to create these values.</p></div><div class=paragraph><p>So here is how you can set up a slightly modified production logger
+that writes console format with formatted time stamps:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-go data-lang=go>prodConfig := zap.NewProductionConfig()
+prodConfig.Encoding = "console"
+prodConfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+prodConfig.EncoderConfig.EncodeDuration = zapcore.StringDurationEncoder
+logger, _ := prodConfig.Build()
+logger.Warn("Oh no!")
+
+//&gt; 2020-06-15T21:49:16.513+0200	warn	app.go:77	Oh no!</code></pre></div></div><div class=paragraph><p>The documentation of
+<a href="https://pkg.go.dev/go.uber.org/zap@v1.15.0?tab=doc#Config"><code>Config</code></a>
+is helpful and it seems easy to customize the logger even further.</p></div><div class="admonitionblock tip"><table><tr><td class=icon><i class="fa icon-tip" title=Tip></i></td><td class=content><div class=paragraph><p>This may be obvious for veterans of native development,
+but for Java-land people like me this seems odd:
+you "configure" things like your logger by re-compiling your application.
+Makes sense&#8201;&#8212;&#8201;there is no JIT to clean away debug code, after all!</p></div><div class=paragraph><p>I created a runnable example based on the above:
+<a href=https://gist.github.com/reitzig/2d53098861b6c1b7fcdfb065b4a81f2d>Gist</a></p></div></td></tr></table></div></article><section class="article labels"><a class=tag href=/today-i-learned/tags/programming/>Programming</a><a class=tag href=/today-i-learned/tags/go/>Go</a><a class=tag href=/today-i-learned/tags/library/>Library</a></section></div><div class="article bottom"><section class="article navigation"><p><a class=link href=/today-i-learned/posts/2020-06-11-sane-yaml-with-json-schema/><span class="li iconfont icon-article"></span>Sane YAML With JSON Schema</a></p></section></div></section><section id=footer><div class=footer-wrap><p class=copyright>© 2020 Raphael Reitzig<br>This work is licensed under a
+<a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License
+</a>.<br><a rel=license href=http://creativecommons.org/licenses/by/4.0/><img alt="Creative Commons License" style=border-width:0 src=cc-by-80x15.png></a></p><p class=powerby><span>Powered by </span><a href=https://gohugo.io target=_blank>Hugo</a><span> and the </span><a href=https://themes.gohugo.io/hugo-notepadium/ target=_blank>Notepadium</a></p></div></section><script src=/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js integrity=sha384-B5k0ipHc4Sxr5Kc/lDz+ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU></script><script>hljs.initHighlightingOnLoad();</script></body></html>

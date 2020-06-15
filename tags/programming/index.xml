@@ -7,7 +7,11 @@ Creative Commons Attribution 4.0 International License
 &lt;br />
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
-&lt;/a></copyright><lastBuildDate>Thu, 11 Jun 2020 21:28:53 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/programming/index.xml" rel="self" type="application/rss+xml"/><item><title>Sane YAML With JSON Schema</title><link>/today-i-learned/posts/2020-06-11-sane-yaml-with-json-schema/</link><pubDate>Thu, 11 Jun 2020 21:28:53 +0200</pubDate><guid>/today-i-learned/posts/2020-06-11-sane-yaml-with-json-schema/</guid><description>&lt;div class="paragraph">
+&lt;/a></copyright><lastBuildDate>Mon, 15 Jun 2020 21:29:26 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/programming/index.xml" rel="self" type="application/rss+xml"/><item><title>Logging in Go With Zap</title><link>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</link><pubDate>Mon, 15 Jun 2020 21:29:26 +0200</pubDate><guid>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</guid><description>&lt;div class="paragraph">
+&lt;p>I'm still getting used to developing native applications,
+and Go logging was a challenge for me:
+How do I get different logging output in tests and production?&lt;/p>
+&lt;/div></description></item><item><title>Sane YAML With JSON Schema</title><link>/today-i-learned/posts/2020-06-11-sane-yaml-with-json-schema/</link><pubDate>Thu, 11 Jun 2020 21:28:53 +0200</pubDate><guid>/today-i-learned/posts/2020-06-11-sane-yaml-with-json-schema/</guid><description>&lt;div class="paragraph">
 &lt;p>Most popular CI/CD systems use YAML as input language for their pipelines.
 Debugging pipelines is always annoying due to long feedback cycles,
 but I get particularly upset if the reason for failure is malformed YAML.&lt;/p>
