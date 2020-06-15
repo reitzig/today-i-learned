@@ -1,0 +1,80 @@
+---
+title: "Logging in Go With Zap"
+date: 2020-06-15T21:29:26+02:00
+tags: ["Programming", "Go", "Library"]
+---
+
+I\'m still getting used to developing native applications,
+and Go logging was a challenge for me: 
+How do I get different logging output in tests and production?
+<!--more-->
+
+Writing a
+    link:https://github.com/reitzig/container-do[human-facing CLI application],
+here is what I want from logging:
+
+ - log levels;
+ - human-readable messages, always;
+ - high verbosity during tests, including timestamps;
+ - lower verbosity in production, only actionable output.
+
+Go\'s 
+    link:https://golang.org/pkg/log/[built-in logging]
+does not seem the have all of these features,
+or maybe I did not see them due to its rather arcane API.
+
+A quick search leads to
+    link:https://github.com/uber-go/zap[zap],
+"blazing fast, structured, leveled logging in Go".
+Test logging works immediately as advertised:
+
+```go
+logger, _ := zap.NewDevelopment()
+logger.Sugar().Debugf("Parsed config: %+v", config)
+
+//> 2020-06-15T21:41:06.109+0200	DEBUG	app.go:77	Parsed config: { ... }
+```
+
+Very cool, that is exactly what we need in test logs!
+Production logging, on the other hand, is not an immediate fit:
+
+```go
+logger, _ = zap.NewProduction()
+logger.Warn("Oh no!")
+
+//> {"level":"warn","ts":1592250230.533966,"caller":"app.go:77","msg":"Oh no!"}
+```
+
+While JSON logs are very useful when running services with log aggregation,
+we need something else for CLI tools.
+Now, `+NewProduction+` _does_ take `+Option+` parameters,
+but I could not figure out how to create these values.
+
+So here is how you can set up a slightly modified production logger
+that writes console format with formatted time stamps:
+
+```go
+prodConfig := zap.NewProductionConfig()
+prodConfig.Encoding = "console"
+prodConfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+prodConfig.EncoderConfig.EncodeDuration = zapcore.StringDurationEncoder
+logger, _ := prodConfig.Build()
+logger.Warn("Oh no!")
+
+//> 2020-06-15T21:49:16.513+0200	warn	app.go:77	Oh no!
+```
+
+The documentation of 
+    link:https://pkg.go.dev/go.uber.org/zap@v1.15.0?tab=doc#Config[`+Config+`]
+is helpful and it seems easy to customize the logger even further.
+
+[TIP]
+====
+This may be obvious for veterans of native development,
+but for Java-land people like me this seems odd:
+you "configure" things like your logger by re-compiling your application.
+Makes sense -- there is no JIT to clean away debug code, after all!
+
+I created a runnable example based on the above:
+    link:https://gist.github.com/reitzig/2d53098861b6c1b7fcdfb065b4a81f2d[Gist]
+====

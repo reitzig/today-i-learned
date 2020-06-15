@@ -1,4 +1,4 @@
-personal_ws-1.1 en 22 
+personal_ws-1.1 en 24 
 UI
 Impressum
 Dockerfile
@@ -10,6 +10,7 @@ Intellij
 AsciiDoc
 Kotlin
 YAML
+runnable
 IDEs
 runtime
 Ansible
@@ -17,6 +18,7 @@ changelists
 DevOps
 changelist
 JSON
+CLI
 JUnit
 schemas
 OmegaPolice
