@@ -18,6 +18,7 @@ theme = "hugo-notepadium"
 
 [params]
 #slogan = "Lesson of the day"
+sources = "https://github.com/reitzig/today-i-learned"
 license = ""
 
 [params.nav]
@@ -37,6 +38,7 @@ theme = "github"
 
 [params.assets]
 css = [
+    "css/extensions.css", 
     "css/fixes.css", 
     "css/admonitions.css",
     "css/privacy_hacks.css" # TODO: only in impressum.adoc ?
