@@ -1,2 +1,8 @@
 <base href="{{ .Site.BaseURL }}"><!-- simpler static links; credits: https://stackoverflow.com/a/46180551/539599 -->
 <link rel="icon" href="data:;base64,="><!-- avoid spurious 404s -->
+
+<meta name="author" content="{{ .Site.Params.Author }}" />
+<meta name="description" content="{{ .Summary |  safeHTML }}" />
+{{- if .Params.tags -}}
+<meta name="keywords" content="{{ delimit .Params.tags ", " | safeHTML }}" />
+{{- end -}}

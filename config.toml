@@ -17,6 +17,7 @@ copyright = """
 theme = "hugo-notepadium"
 
 [params]
+author = "Raphael Reitzig"
 #slogan = "Lesson of the day"
 license = ""
 

@@ -11,6 +11,7 @@
 /* Draw a subtle border around images for clarity */
 .article.markdown-body div.imageblock img {
     border: 1px solid #ccc;
+    margin-left: 1em;
 }
 
 /* I prefer a keyboard-ey look over the code-ey look. */

@@ -44,7 +44,7 @@ image::img/2020-06-11-json-schema-for-yaml-2.png[GitHub Actions syntax error]
 . Visit the Schema Mappings dialog to add custom schemas and 
 fine-tune your configuration:
 +
-image::img/2020-06-11-json-schema-for-yaml-3.png[GitHub Actions syntax error]
+image::img/2020-06-11-json-schema-for-yaml-3.png[width=90%,alt="GitHub Actions syntax error"]
 +
 Note how I told IDEA to match all files in `+.github/workflows+` to the appropriate schema.
 
