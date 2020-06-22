@@ -1,6 +1,7 @@
 ---
 title: "Logging in Go With Zap"
 date: 2020-06-15T21:29:26+02:00
+lastmod: 2020-06-22T15:45:00+02:00
 tags: ["Programming", "Go", "Library"]
 tweet: ["OmegaPolice","1272629065888018432"]
 ---
@@ -78,4 +79,10 @@ Makes sense -- there is no JIT to clean away debug code, after all!
 
 I created a runnable example based on the above:
     link:https://gist.github.com/reitzig/2d53098861b6c1b7fcdfb065b4a81f2d[Gist]
+
+Of course, you can also use dynamic state, at the cost of fewer potential for
+compiler optimization.
+For example, I have pivoted to 
+    link:https://github.com/reitzig/container-do/blob/d17359b2f3eb1d18da51591fa0e0d25856ba6506/cmd/container-do/logger.go[using an environment variable]
+in container-do (and trimmed down the output even more).
 ====

@@ -1,6 +1,7 @@
 ---
 title: "Using Build Tools From Containers"
 date: 2020-05-29T17:38:45+02:00
+lastmod: 2020-06-22T15:38:45+02:00
 tags: ["Programming", "Docker", "Tool"]
 tweet: ["OmegaPolice", "1266406792889860102"]
 ---
@@ -76,3 +77,7 @@ Future work:
 - Generalize the script to make it a proper tool.
   (I solved a similar problem once link:https://github.com/reitzig/texlive-docker[before].)
 - Use a container runner that does not create files with `+root:root+` ownership.
+
+NOTE: I have since released 
+        link:https://github.com/reitzig/container-do[`+container-do+`]
+      which is more general and robust than this script here.
