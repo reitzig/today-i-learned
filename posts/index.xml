@@ -7,7 +7,15 @@ Creative Commons Attribution 4.0 International License
 &lt;br />
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
-&lt;/a></copyright><lastBuildDate>Mon, 15 Jun 2020 21:29:26 +0200</lastBuildDate><atom:link href="/today-i-learned/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Logging in Go With Zap</title><link>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</link><pubDate>Mon, 15 Jun 2020 21:29:26 +0200</pubDate><guid>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</guid><description>&lt;div class="paragraph">
+&lt;/a></copyright><lastBuildDate>Wed, 17 Jun 2020 19:19:47 +0200</lastBuildDate><atom:link href="/today-i-learned/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Control SVG Groups in LaTeX</title><link>/today-i-learned/posts/2020-06-17-control-svg-groups-in-latex/</link><pubDate>Wed, 17 Jun 2020 19:19:47 +0200</pubDate><guid>/today-i-learned/posts/2020-06-17-control-svg-groups-in-latex/</guid><description>&lt;div class="paragraph">
+&lt;p>I love the powerful LaTeX drawing package
+&lt;a href="http://www.texample.net/tikz/">TikZ&lt;/a>
+and use it whenever I can,
+in particular for creating SVGs.
+Converting from PDF to SVG with
+&lt;a href="https://inkscape.org/">Inkscape&lt;/a>
+usually gives good results, visually&amp;#8201;&amp;#8212;&amp;#8201;but what if the &lt;em>structure&lt;/em> of the XML is important, as well?&lt;/p>
+&lt;/div></description></item><item><title>Logging in Go With Zap</title><link>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</link><pubDate>Mon, 15 Jun 2020 21:29:26 +0200</pubDate><guid>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</guid><description>&lt;div class="paragraph">
 &lt;p>I'm still getting used to developing native applications,
 and Go logging was a challenge for me:
 How do I get different logging output in tests and production?&lt;/p>

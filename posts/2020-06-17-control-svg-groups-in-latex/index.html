@@ -1,0 +1,31 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.72.0"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><title>Control SVG Groups in LaTeX&nbsp;&ndash;&nbsp;Today I Learned</title><link rel=stylesheet href=/today-i-learned/css/core.min.2d7f66160756abbb1d0ea904dbc2c8342b03ee5d831749438fc684c6d27d44e6a14bd87fb771adde2f3049e250cc99e3.css integrity=sha384-LX9mFgdWq7sdDqkE28LINCsD7l2DF0lDj8aExtJ9ROahS9h/t3Gt3i8wSeJQzJnj><meta name=twitter:card content="summary"><meta name=twitter:title content="Control SVG Groups in LaTeX"><base href=https://reitzig.github.io/today-i-learned/><link rel=icon href="data:;base64,="><meta name=author content="Raphael Reitzig"><meta name=description content="I love the powerful LaTeX drawing package
+    TikZ
+and use it whenever I can,
+in particular for creating SVGs.
+Converting from PDF to SVG with
+    Inkscape
+usually gives good results, visually&#8201;&#8212;&#8201;but what if the structure of the XML is important, as well?"><meta name=keywords content="LaTeX,Tool"><body><section id=header><div class="header wrap"><span class="header left-side"><a class="site home" href=/today-i-learned/><span class="site name">Today I Learned</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/today-i-learned/tags/>Tags</a><a class="nav item" href=impressum>About</a></nav></div></span></div></section><section id=content><div class=article-container><section class="article header"><h1 class="article title">Control SVG Groups in LaTeX</h1><p class="article date">2020-06-17</p></section><article class="article markdown-body"><div class=paragraph><p>I love the powerful LaTeX drawing package
+<a href=http://www.texample.net/tikz/>TikZ</a>
+and use it whenever I can,
+in particular for creating SVGs.
+Converting from PDF to SVG with
+<a href=https://inkscape.org/>Inkscape</a>
+usually gives good results, visually&#8201;&#8212;&#8201;but what if the <em>structure</em> of the XML is important, as well?</p></div><div class=paragraph><p>For example, you may want to manually tweak the arrangement of certain elements in Inkscape.
+For this, it is important that SVG groups are meaningful or at least not harmful.
+Unfortunately, as I describe
+<a href=https://tex.stackexchange.com/q/549739/3213>on tex.SE</a>,
+the <code>lualatex</code>+Inkscape pipeline can create pathological group arrangements that are a pain to work with.</p></div><div class=paragraph><p>Helpful user
+<a href=https://tex.stackexchange.com/users/1053/alexg>AlexG</a>
+<a href=https://tex.stackexchange.com/a/549798/3213>reminded me</a>
+of the <code>dvilualatex</code>+<code>dvisvgm</code> pipeline.
+Given that
+<a href=https://dvisvgm.de/><code>dvisvgm</code></a>
+has specifically been developed to consume LaTeX-generated files,
+it is certainly worth a shot!</p></div><div class=paragraph><p>And indeed, we can instrument the DVI by inserting special LaTeX commands in the source:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-latex data-lang=latex>\special{dvisvgm:raw &lt;g id="My Group"&gt;}
+% any code
+\special{dvisvgm:raw &lt;/g&gt;}</code></pre></div></div><div class=paragraph><p>The intermediate DVI looks just the same, but now <code>dvisvgm</code> knows to inject the given SVG snippets into its output.</p></div><div class="admonitionblock tip"><table><tr><td class=icon><i class="fa icon-tip" title=Tip></i></td><td class=content>Some tweaking of the <code>dvisvgm</code> call may be necessary depending on your document.
+For instance, I needed to add <code>--no-fonts</code> to force it to convert text into SVG paths
+instead of trying to include the font, which did not work in my setup.</td></tr></table></div></article><section class="article labels"><a class=tag href=/today-i-learned/tags/latex/>LaTeX</a><a class=tag href=/today-i-learned/tags/tool/>Tool</a></section></div><div class="article bottom"><section class="article navigation"><p><a class=link href=/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/><span class="li iconfont icon-article"></span>Logging in Go With Zap</a></p></section></div></section><section id=footer><div class=footer-wrap><p class=copyright>© 2020 Raphael Reitzig<br>This work is licensed under a
+<a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License
+</a>.<br><a rel=license href=http://creativecommons.org/licenses/by/4.0/><img alt="Creative Commons License" style=border-width:0 src=cc-by-80x15.png></a></p><p class=powerby><span>Powered by </span><a href=https://gohugo.io target=_blank>Hugo</a><span> and the </span><a href=https://themes.gohugo.io/hugo-notepadium/ target=_blank>Notepadium</a></p></div></section><script src=/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js integrity=sha384-B5k0ipHc4Sxr5Kc/lDz+ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU></script><script>hljs.initHighlightingOnLoad();</script></body></html>
