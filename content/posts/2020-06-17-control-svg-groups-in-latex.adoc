@@ -1,0 +1,44 @@
+---
+title: "Control SVG Groups in LaTeX"
+date: 2020-06-17T19:19:47+02:00
+tags: ["LaTeX", "Tool"]
+---
+
+I love the powerful LaTeX drawing package
+    link:http://www.texample.net/tikz/[TikZ]
+and use it whenever I can, 
+in particular for creating SVGs.
+Converting from PDF to SVG with
+    link:https://inkscape.org/[Inkscape]
+usually gives good results, visually -- 
+but what if the _structure_ of the XML is important, as well?
+<!--more-->
+
+For example, you may want to manually tweak the arrangement of certain elements in Inkscape.
+For this, it is important that SVG groups are meaningful or at least not harmful.
+Unfortunately, as I describe
+    link:https://tex.stackexchange.com/q/549739/3213[on tex.SE],
+the `+lualatex+`+Inkscape pipeline can create pathological group arrangements that are a pain to work with.
+
+Helpful user
+    link:https://tex.stackexchange.com/users/1053/alexg[AlexG] 
+    link:https://tex.stackexchange.com/a/549798/3213[reminded me] 
+of the `+dvilualatex+`+`+dvisvgm+` pipeline.
+Given that
+    link:https://dvisvgm.de/[`+dvisvgm+`]
+has specifically been developed to consume LaTeX-generated files,
+it is certainly worth a shot!
+
+And indeed, we can instrument the DVI by inserting special LaTeX commands in the source:
+
+```latex
+\special{dvisvgm:raw <g id="My Group">}
+% any code
+\special{dvisvgm:raw </g>}
+```
+
+The intermediate DVI looks just the same, but now `+dvisvgm+` knows to inject the given SVG snippets into its output.
+
+TIP: Some tweaking of the `+dvisvgm+` call may be necessary depending on your document.
+     For instance, I needed to add `+--no-fonts+` to force it to convert text into SVG paths
+     instead of trying to include the font, which did not work in my setup.
