@@ -1,0 +1,77 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.72.0"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><title>GitHub Actions: Create Releases With Changelog and Assets&nbsp;&ndash;&nbsp;Today I Learned</title><link rel=stylesheet href=/today-i-learned/css/core.min.2d7f66160756abbb1d0ea904dbc2c8342b03ee5d831749438fc684c6d27d44e6a14bd87fb771adde2f3049e250cc99e3.css integrity=sha384-LX9mFgdWq7sdDqkE28LINCsD7l2DF0lDj8aExtJ9ROahS9h/t3Gt3i8wSeJQzJnj><meta name=twitter:card content="summary"><meta name=twitter:title content="GitHub Actions: Create Releases With Changelog and Assets"><base href=https://reitzig.github.io/today-i-learned/><link rel=icon href="data:;base64,="><meta name=author content="Raphael Reitzig"><meta name=description content="GitHub Actions is all about automating things.
+Creating releases can include annoying manual work, though;
+for instance, there is little out-of-the-box support for adding the correct assets and a meaningful description."><meta name=keywords content="GitHub Actions,CI/CD"><body><section id=header><div class="header wrap"><span class="header left-side"><a class="site home" href=/today-i-learned/><span class="site name">Today I Learned</span></a></span>
+<span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/today-i-learned/tags/>Tags</a><a class="nav item" href=impressum>About</a></nav></div></span></div></section><section id=content><div class=article-container><section class="article header"><h1 class="article title">GitHub Actions: Create Releases With Changelog and Assets</h1><p class="article date">2020-06-22</p></section><article class="article markdown-body"><div class=paragraph><p>GitHub Actions is all about automating things.
+Creating releases can include annoying manual work, though;
+for instance, there is little out-of-the-box support for adding the correct assets and a meaningful description.</p></div><div class=paragraph><p>Today I learned how to build a workflow that proceeds as follows.</p></div><div class="olist arabic"><ol class=arabic><li><p>Triggered by semver-style tags,</p></li><li><p>build Go binaries for multiple platforms,</p></li><li><p>collect build artifacts,</p></li><li><p>create a GitHub release with</p></li><li><p>the relevant <code>CHANGELOG</code> section as description, and</p></li><li><p>attach an archive with binary, license, and README for each target platform.</p></li></ol></div><div class=paragraph><p>I will explain the most relevant parts with snippets below;
+find the full workflow I created
+<a href=https://github.com/reitzig/container-do/blob/f687b3c25ac941dfcbb692aef3bc62518c77d33f/.github/workflows/release.yml>here</a>.</p></div><div class=sect1><h2 id=_building_many_binaries>Building Many Binaries</h2><div class=sectionbody><div class=paragraph><p>We can use a
+<a href=https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix>build matrix</a>
+as a convenient way to build different combinations of binaries:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-yaml data-lang=yaml>build:
+  runs-on: 'ubuntu-18.04'
+  strategy:
+    matrix:
+      target-os:
+        - 'linux'
+        - 'darwin'
+        - 'windows'
+      target-arch:
+        - 'amd64'</code></pre></div></div><div class=paragraph><p>It is important to note here that <code>target-os</code> and <code>target-arch</code> are my choice, not built-ins&#8201;&#8212;&#8201;use whichever parameters your build requires!
+We can use those names as variables in a step later on:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-yaml data-lang=yaml>- run: |
+    go build -o my-app ./...
+
+    version="${GITHUB_REF#refs/tags/}"
+    archive_name="my-app_${version}_${GOOS}-${GOARCH}"
+    if [[ "${GOOS}" == "windows" ]]; then
+      zip "${archive_name}.zip" my-app LICENSE README.md
+    else
+      tar -czf "${archive_name}.tar.gz" my-app LICENSE README.md
+    fi
+  env:
+    GOOS: ${{ matrix.target-os }}
+    GOARCH: ${{ matrix.target-arch }}</code></pre></div></div></div></div><div class=sect1><h2 id=_assemble_artifacts>Assemble Artifacts</h2><div class=sectionbody><div class=paragraph><p>By using a build matrix above, we have created many independent jobs.
+When we create the release later, we do not see their respective file systems!
+Therefore, we have to store the archives we created as
+<a href=https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts#uploading-build-and-test-artifacts>build artifacts</a>.
+Using action
+<a href=https://github.com/actions/upload-artifact>upload-artifact</a>,
+we can even collect all archives in a single artifact:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-yaml data-lang=yaml>- uses: actions/upload-artifact@v2
+  with:
+    name: "Build Archives"
+    path: 'my-app_*'</code></pre></div></div></div></div><div class=sect1><h2 id=_prepare_release>Prepare Release</h2><div class=sectionbody><div class=paragraph><p>Now, in a separate job without a build matrix, we can assemble our release.
+We will use the neat action
+<a href=https://github.com/marketplace/actions/git-release>git-release</a>,
+but some preparation is needed.
+First, we download the build archives from the artifact store and
+create a list of all included files.</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-yaml data-lang=yaml>- uses: actions/download-artifact@v2
+  with:
+    name: "Build Archives"
+
+- id: asset_names
+  run: echo ::set-output name=LIST::$(ls my-app_*.{tar.gz,zip})</code></pre></div></div><div class="admonitionblock note"><table><tr><td class=icon><i class="fa icon-note" title=Note></i></td><td class=content>This seems a little more cumbersome than necessary;
+I created
+<a href=https://github.com/anton-yurchenko/git-release/issues/24>a ticket</a>.</td></tr></table></div><div class=paragraph><p>Then, because I want to release tags of the form <code>+X.Y.Z-foo</code> as pre-releases,
+another step to inspect the Git tag:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-yaml data-lang=yaml>- id: is_pre_release
+  run: |
+    version="${GITHUB_REF#refs/tags/}"
+    if [[ "${version}" =~ -.*$ ]]; then
+      echo ::set-output name=IS_PRERELEASE::true
+    else
+      echo ::set-output name=IS_PRERELEASE::false
+    fi</code></pre></div></div><div class=paragraph><p>Note the use of
+<a href=https://help.github.com/en/actions/reference/workflow-commands-for-github-actions>workflow command</a>
+<code>set-output</code> to persist information for a later step.</p></div></div></div><div class=sect1><h2 id=_create_release>Create Release</h2><div class=sectionbody><div class=paragraph><p>Finally, we can call the release action:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-yaml data-lang=yaml>- uses: docker://antonyurchenko/git-release:v3
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    DRAFT_RELEASE: "false"
+    PRE_RELEASE: ${{ steps.is_pre_release.outputs.IS_PRERELEASE }}
+    CHANGELOG_FILE: "CHANGELOG.md"
+    ALLOW_EMPTY_CHANGELOG: "false"
+    ALLOW_TAG_PREFIX: "true"
+  with:
+    args: "${{ steps.asset_names.outputs.LIST }}"</code></pre></div></div><div class=paragraph><p>This does quite a few things automatically;
+in particular, it will pull the description from our
+<a href=https://keepachangelog.com/en/>keep-a-changelog</a>-style
+<code>CHANGELOG.md</code> (and fail if we forgot to add one).</p></div></div></div></article><section class="article labels"><a class=tag href=/today-i-learned/tags/github-actions/>GitHub Actions</a><a class=tag href=/today-i-learned/tags/ci/cd/>CI/CD</a></section></div><div class="article bottom"><section class="article navigation"><p><a class=link href=/today-i-learned/posts/2020-06-17-control-svg-groups-in-latex/><span class="li iconfont icon-article"></span>Control SVG Groups in LaTeX</a></p></section></div></section><section id=footer><div class=footer-wrap><p class=copyright>© 2020 Raphael Reitzig<br>This work is licensed under a
+<a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License
+</a>.<br><a rel=license href=http://creativecommons.org/licenses/by/4.0/><img alt="Creative Commons License" style=border-width:0 src=cc-by-80x15.png></a></p><p class=powerby><span>Powered by </span><a href=https://gohugo.io target=_blank>Hugo</a><span> and the </span><a href=https://themes.gohugo.io/hugo-notepadium/ target=_blank>Notepadium</a></p></div></section><script src=/today-i-learned/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js integrity=sha384-B5k0ipHc4Sxr5Kc/lDz+ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU></script><script>hljs.initHighlightingOnLoad();</script></body></html>
