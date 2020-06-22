@@ -1,0 +1,145 @@
+---
+title: "GitHub Actions: Create Releases With Changelog and Assets"
+date: 2020-06-22T14:51:30+02:00
+tags: ["GitHub Actions", "CI/CD"]
+---
+
+GitHub Actions is all about automating things.
+Creating releases can include annoying manual work, though;
+for instance, there is little out-of-the-box support for adding the correct assets and a meaningful description.
+<!--more-->
+
+Today I learned how to build a workflow that proceeds as follows.
+
+. Triggered by semver-style tags,
+. build Go binaries for multiple platforms,
+. collect build artifacts,
+. create a GitHub release with
+. the relevant `+CHANGELOG+` section as description, and
+. attach an archive with binary, license, and README for each target platform.
+
+I will explain the most relevant parts with snippets below;
+find the full workflow I created 
+    link:https://github.com/reitzig/container-do/blob/f687b3c25ac941dfcbb692aef3bc62518c77d33f/.github/workflows/release.yml[here].
+
+
+## Building Many Binaries
+
+We can use a
+    link:https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix[build matrix]
+as a convenient way to build different combinations of binaries:
+
+```yaml
+build:
+  runs-on: 'ubuntu-18.04'
+  strategy:
+    matrix:
+      target-os:
+        - 'linux'
+        - 'darwin'
+        - 'windows'
+      target-arch:
+        - 'amd64'
+```
+
+It is important to note here that `target-os` and `target-arch` are my choice, not built-ins -- 
+use whichever parameters your build requires!
+We can use those names as variables in a step later on:
+
+```yaml
+- run: |
+    go build -o my-app ./...
+
+    version="${GITHUB_REF#refs/tags/}"
+    archive_name="my-app_${version}_${GOOS}-${GOARCH}"
+    if [[ "${GOOS}" == "windows" ]]; then
+      zip "${archive_name}.zip" my-app LICENSE README.md
+    else
+      tar -czf "${archive_name}.tar.gz" my-app LICENSE README.md
+    fi
+  env:
+    GOOS: ${{ matrix.target-os }}
+    GOARCH: ${{ matrix.target-arch }}
+```
+
+
+## Assemble Artifacts
+
+By using a build matrix above, we have created many independent jobs.
+When we create the release later, we do not see their respective file systems!
+Therefore, we have to store the archives we created as
+    link:https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts#uploading-build-and-test-artifacts[build artifacts].
+Using action
+    link:https://github.com/actions/upload-artifact[upload-artifact],
+we can even collect all archives in a single artifact:
+
+```yaml
+- uses: actions/upload-artifact@v2
+  with:
+    name: "Build Archives"
+    path: 'my-app_*'
+```
+
+
+## Prepare Release
+
+Now, in a separate job without a build matrix, we can assemble our release.
+We will use the neat action
+    link:https://github.com/marketplace/actions/git-release[git-release],
+but some preparation is needed.
+First, we download the build archives from the artifact store and 
+create a list of all included files.
+
+```yaml
+- uses: actions/download-artifact@v2
+  with:
+    name: "Build Archives"
+
+- id: asset_names
+  run: echo ::set-output name=LIST::$(ls my-app_*.{tar.gz,zip})
+```
+
+NOTE: This seems a little more cumbersome than necessary;
+      I created
+        link:https://github.com/anton-yurchenko/git-release/issues/24[a ticket].
+
+Then, because I want to release tags of the form `+X.Y.Z-foo` as pre-releases,
+another step to inspect the Git tag:
+
+```yaml
+- id: is_pre_release
+  run: |
+    version="${GITHUB_REF#refs/tags/}"
+    if [[ "${version}" =~ -.*$ ]]; then
+      echo ::set-output name=IS_PRERELEASE::true
+    else
+      echo ::set-output name=IS_PRERELEASE::false
+    fi
+```
+
+Note the use of
+    link:https://help.github.com/en/actions/reference/workflow-commands-for-github-actions[workflow command]
+`+set-output+` to persist information for a later step.
+
+
+## Create Release
+
+Finally, we can call the release action:
+
+```yaml
+- uses: docker://antonyurchenko/git-release:v3
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    DRAFT_RELEASE: "false"
+    PRE_RELEASE: ${{ steps.is_pre_release.outputs.IS_PRERELEASE }}
+    CHANGELOG_FILE: "CHANGELOG.md"
+    ALLOW_EMPTY_CHANGELOG: "false"
+    ALLOW_TAG_PREFIX: "true"
+  with:
+    args: "${{ steps.asset_names.outputs.LIST }}"
+```
+
+This does quite a few things automatically;
+in particular, it will pull the description from our
+    link:https://keepachangelog.com/en/[keep-a-changelog]-style
+`+CHANGELOG.md+` (and fail if we forgot to add one).
