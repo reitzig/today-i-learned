@@ -28,16 +28,14 @@ jobs:
 
       - name: Setup asciidoctor
         uses: reitzig/actions-asciidoctor@v1.0.0
-        with:
-          options: "-a experimental=true -a icons=font"
 
       - name: Build
         run: hugo --minify
         env:
-          HUGO_ENV_PRIVATE_ADDRESS: "${{ secrets.HUGO_ENV_PRIVATE_ADDRESS }}"  
-          HUGO_ENV_PRIVATE_USER:    "${{ secrets.HUGO_ENV_PRIVATE_USER }}"  
+          HUGO_ENV_PRIVATE_ADDRESS: "${{ secrets.HUGO_ENV_PRIVATE_ADDRESS }}"
+          HUGO_ENV_PRIVATE_USER:    "${{ secrets.HUGO_ENV_PRIVATE_USER }}"
           HUGO_ENV_PRIVATE_DOMAIN:  "${{ secrets.HUGO_ENV_PRIVATE_DOMAIN }}"
-      
+
       - name: Deploy
         if: github.ref == 'refs/heads/master' && github.event.repository.fork == false
         uses: peaceiris/actions-gh-pages@v3
