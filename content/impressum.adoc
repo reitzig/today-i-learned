@@ -1,6 +1,6 @@
 ---
 title: "Impressum"
-lastMod: 2020-05-25T13:00:00+02:00
+lastMod: 2020-08-06T16:45:00+02:00
 robots: "noindex"
 assets:
   css: ["css/privacy_hacks.css"]
@@ -21,7 +21,7 @@ Other forms of content end up on:
 
 ## License
 
-Unless stated otherwise, all content is licensed under a 
+Unless stated otherwise, all content is licensed under a
     link:http://creativecommons.org/licenses/by/4.0/[Creative Commons Attribution 4.0 International License].
 
 
@@ -46,8 +46,8 @@ That said, I do not intend to promote or endorse illicit content, however implic
 Should I have linked to troublesome material by accident or oversight,
 please let me know so I can remove the links in question.
 
-I am -- for better or worse -- responsible for these pages here, though. 
-Please contact me if you feel that your personal rights or business plans have been violated by the content I provide; 
+I am -- for better or worse -- responsible for these pages here, though.
+Please contact me if you feel that your personal rights or business plans have been violated by the content I provide;
 I most certainly did not intend to do so. Thank you.
 
 Any opinions I voice on these pages are solely my own.
@@ -64,7 +64,7 @@ at pain of being sent cease-and-desist letters asking for thousands of Euros by 
 ++++
 <p>Raphael Reitzig<br />
 <span class="hack_1"></span><br />
-90453 Nürnberg</p>
+97076 Würzburg</p>
 ++++
 
 ### Kontakt
@@ -73,7 +73,7 @@ at pain of being sent cease-and-desist letters asking for thousands of Euros by 
 <p>E-Mail: <span class="hack_2">@</span></p>
 ++++
 
-Der Nutzung oder Übermittlung der obigen Daten für Zwecke der Werbung oder der Markt- oder Meinungsforschung 
+Der Nutzung oder Übermittlung der obigen Daten für Zwecke der Werbung oder der Markt- oder Meinungsforschung
 wird hiermit ausdrücklich widersprochen (§ 28 Abs. 4 Bundesdatenschutzgesetz).
 
 ### Haftung für Inhalte
