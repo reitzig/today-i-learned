@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>hugo on Today I Learned</title><link>/today-i-learned/tags/hugo/</link><description>Recent content in hugo on Today I Learned</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright> © 2020 Raphael Reitzig
+&lt;br />
+This work is licensed under a
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+Creative Commons Attribution 4.0 International License
+&lt;/a>.
+&lt;br />
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+&lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+&lt;/a></copyright><lastBuildDate>Fri, 21 Aug 2020 11:21:30 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>A Demo Post</title><link>/today-i-learned/posts/2020-08-21-a-demo-post/</link><pubDate>Fri, 21 Aug 2020 11:21:30 +0200</pubDate><guid>/today-i-learned/posts/2020-08-21-a-demo-post/</guid><description>&lt;div class="paragraph">
+&lt;p>Today I shortly present my Hugo setup&lt;/p>
+&lt;/div></description></item></channel></rss>
