@@ -1,0 +1,14 @@
+---
+title: "A Demo Post"
+date: 2020-08-21T11:21:30+02:00
+tags: ["live demo", "hugo"]
+---
+
+Today I shortly present my Hugo setup
+<!--more-->
+
+We published a post!
+
+image::img/2020-08-21-demo.png[Das war die Agenda!]
+
+WARNING: Delete it later!
