@@ -1,7 +1,8 @@
 ---
-title: "Postpone Discussions in Gitlab"
+title: "Postpone Discussions in GitLab"
 date: 2020-10-14T12:59:31+02:00
 tags: ["GitLab", "Tool"]
+tweet: ["OmegaPolice", "1316419219169386496"]
 ---
 
 As a professional nitpicker,
