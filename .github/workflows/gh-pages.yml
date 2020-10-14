@@ -27,7 +27,7 @@ jobs:
           ruby-version: 2.7
 
       - name: Setup asciidoctor
-        uses: reitzig/actions-asciidoctor@v1.0.0
+        uses: reitzig/actions-asciidoctor@v1.0.1
 
       - name: Build
         run: hugo --minify
