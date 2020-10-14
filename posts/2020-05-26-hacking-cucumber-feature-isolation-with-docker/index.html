@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.74.3"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><title>Hacking Cucumber: Isolating Features With Docker&nbsp;&ndash;&nbsp;Today I Learned</title><link rel=stylesheet href=/today-i-learned/css/core.min.13938c4019756f58c39ce553e64b3385b99b1bc0df8b769e40f8be68c93f3fdf3bfd0f9c581d476e489d709bf1cfa9a6.css integrity=sha384-E5OMQBl1b1jDnOVT5kszhbmbG8Dfi3aeQPi+aMk/P987/Q+cWB1HbkidcJvxz6mm><meta name=twitter:card content="summary"><meta name=twitter:title content="Hacking Cucumber: Isolating Features With Docker"><base href=https://reitzig.github.io/today-i-learned/><link rel=icon href="data:;base64,="><meta name=author content="Raphael Reitzig"><meta name=description content="Instead of hacking around the missing feature-level hooks in Cucumber,
+<!doctype html><html lang=en><meta charset=utf-8><meta name=generator content="Hugo 0.76.4"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=color-scheme content="light dark"><meta name=supported-color-schemes content="light dark"><title>Hacking Cucumber: Isolating Features With Docker&nbsp;&ndash;&nbsp;Today I Learned</title><link rel=stylesheet href=/today-i-learned/css/core.min.13938c4019756f58c39ce553e64b3385b99b1bc0df8b769e40f8be68c93f3fdf3bfd0f9c581d476e489d709bf1cfa9a6.css integrity=sha384-E5OMQBl1b1jDnOVT5kszhbmbG8Dfi3aeQPi+aMk/P987/Q+cWB1HbkidcJvxz6mm><meta name=twitter:card content="summary"><meta name=twitter:title content="Hacking Cucumber: Isolating Features With Docker"><base href=https://reitzig.github.io/today-i-learned/><link rel=icon href="data:;base64,="><meta name=author content="Raphael Reitzig"><meta name=description content="Instead of hacking around the missing feature-level hooks in Cucumber,
 we can leverage our familiar container tools from the outside!"><meta name=keywords content="Tool,Testing,Performance"><body><section id=header><div class="header wrap"><span class="header left-side"><a class="site home" href=/today-i-learned/><span class="site name">Today I Learned</span></a></span>
 <span class="header right-side"><div class="nav wrap"><nav class=nav><a class="nav item" href=/today-i-learned/tags/>Tags</a><a class="nav item" href=impressum>About</a></nav></div></span></div></section><section id=content><div class=article-container><section class="article header"><h1 class="article title">Hacking Cucumber: Isolating Features With Docker</h1><p class="article date">2020-05-26</p></section><article class="article markdown-body"><div class=paragraph><p>Instead of hacking around the missing feature-level hooks <em>in</em> Cucumber,
 we can leverage our familiar container tools from the <em>outside</em>!</p></div><div class=paragraph><p>If you say "hell yea", you may want to skip over my mental ramp-up and
@@ -6,7 +6,7 @@ directly to my <a href=#solution>proposed solution</a>.</p></div><div class=para
 This post is a distillate of layman-expert frustrations that I see mirrored in many places online.
 There may be better solutions to the problem I'm about to describe,
 including using a tool more suited to the tests I want to write.</p></div><div class=sect1><h2 id=_the_problem>The Problem</h2><div class=sectionbody><div class=paragraph><p><a href=https://cucumber.io/docs/gherkin/>Gherkin</a>'s
-<code>Feature</code> is just &#8230;&#8203; not a first-class entity in
+<code>Feature</code> is just …​ not a first-class entity in
 <a href=https://cucumber.io/docs/cucumber/>Cucumber</a>:
 The steps you write in <code>Background</code> are simply copied down to every <code>Scenario</code>.
 Same for the existing
@@ -17,7 +17,7 @@ I do not use Cucumber for glorified unit tests but for system-level tests;
 any step may include file, database, or network I/O.
 Thus, shared test setup is crucial:
 Even in my tiny hobby project, I run >100 scenarios.
-If setup takes just 1s (it's more), that amounts to >99s overhead&#8201;&#8212;&#8201;for ~30s of tests!</p></div><div class=paragraph><p>Of course, balancing test isolation versus execution speed is a problem inherent to testing,
+If setup takes just 1s (it's more), that amounts to >99s overhead — for ~30s of tests!</p></div><div class=paragraph><p>Of course, balancing test isolation versus execution speed is a problem inherent to testing,
 and not at all exclusive to Cucumber.
 Bridging the gap between declaring intent and executing tests <em>is</em> a problem that every testing framework struggles with.
 That said, Cucumber seems to specifically prevent building bridges over that gap, and
@@ -31,13 +31,13 @@ Lifting this to <code>BeforeAll</code> is not too hard by making the hook idempo
     perform_setup
   end
 end</code></pre></div></div><div class=paragraph><p>I actually prefer to make the setup explicit in Gherkin <code>Background</code>,
-so I did</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-ruby data-lang=ruby>Given 'set up' do
+so I did</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-ruby data-lang=ruby>Given &#39;set up&#39; do
   if setup_needed?
     perform_setup
   end
 end</code></pre></div></div><div class=paragraph><p>This has the added benefit of being able to pass feature- and/or scenario-specific values
 (note how <code>Before</code> can not even access the scenario, let alone the feature!)
-and providing more opportunity for modularization and re-use than hooks.</p></div><div class=paragraph><p>Now, if <code>setup_needed?</code> is significantly faster than <code>perform_setup</code>&#8201;&#8212;&#8201;a global property could be used, if all else fails&#8201;&#8212;&#8201;this solves the setup cost problem.</p></div><div class=paragraph><p>But how do we tear down a setup in an orderly way so the next <code>Feature</code> can start from scratch?
+and providing more opportunity for modularization and re-use than hooks.</p></div><div class=paragraph><p>Now, if <code>setup_needed?</code> is significantly faster than <code>perform_setup</code> — a global property could be used, if all else fails — this solves the setup cost problem.</p></div><div class=paragraph><p>But how do we tear down a setup in an orderly way so the next <code>Feature</code> can start from scratch?
 There is not even an equivalent to <code>Background</code> in Gherkin!
 Without slapping tear-down on "the last" scenario
 (preventing clear test documents <em>and</em> parallel test execution)
@@ -46,26 +46,26 @@ The best the community has to offer seems to be:</p></div><div class=listingbloc
   tear_down
 end</code></pre></div></div><div class=paragraph><p>This goes directly to the Ruby kernel, though, and can not be controlled per feature.</p></div></div></div><div class=sect1><h2 id=_interlude_wrapping_cucumber>Interlude: Wrapping Cucumber</h2><div class=sectionbody><div class=paragraph><p>After writing the <em>next</em> section, I realized I needed to get an intermediate case out of my brain:
 If Cucumber does not support isolating features, we can sure help it along:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-bash data-lang=bash>for f in features/*.feature; do
-  cucumber "$f"
+  cucumber &#34;$f&#34;
 done</code></pre></div></div><div class=paragraph><p>Now, the workarounds mentioned above <em>do</em>, kinda, work per feature.
 If setup and tear-down are feasible (or preferable) to do outside of the test framework,
 one might even go one step further:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-bash data-lang=bash>setup/before_all.sh
 
 for f in features/*.feature; do
-  feature=$(basename "${f}" '.feature')
+  feature=$(basename &#34;${f}&#34; &#39;.feature&#39;)
 
   if [ -f setup/before_${feature}.sh ]; then
     setup/before_${feature}.sh
   fi
 
-  cucumber "$f"
+  cucumber &#34;$f&#34;
 
   if [ -f setup/after_${feature}.sh ]; then
     setup/after_${feature}.sh
   fi
 done
 
-setup/after_all.sh</code></pre></div></div><div class=paragraph><p>And if you're not willing&#8230;&#8203;</p></div><div class=paragraph><p>I for one do not appreciate moving test logic out of the test code. Smells.</p></div></div></div><div class=sect1><h2 id=_isolation_on_platform_level><a id=solution></a>Isolation on Platform Level</h2><div class=sectionbody><div class=paragraph><p>I use Docker to run my tests in order to isolate them from my machine&#8201;&#8212;&#8201;each test may mess with my system, and I <em>really</em> do not want to write <code>after_all.sh</code>&#8201;&#8212;&#8201;so why not isolate features on <em>that</em> level? Here goes (sketch):</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-Dockerfile data-lang=Dockerfile>FROM ruby:2.5.8-slim-buster
+setup/after_all.sh</code></pre></div></div><div class=paragraph><p>And if you're not willing…​</p></div><div class=paragraph><p>I for one do not appreciate moving test logic out of the test code. Smells.</p></div></div></div><div class=sect1><h2 id=_isolation_on_platform_level><a id=solution></a>Isolation on Platform Level</h2><div class=sectionbody><div class=paragraph><p>I use Docker to run my tests in order to isolate them from my machine — each test may mess with my system, and I <em>really</em> do not want to write <code>after_all.sh</code> — so why not isolate features on <em>that</em> level? Here goes (sketch):</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-Dockerfile data-lang=Dockerfile>FROM ruby:2.5.8-slim-buster
 
 WORKDIR app
 COPY Gemfile ./
@@ -74,18 +74,18 @@ RUN bundle install \
 
 COPY . ./
 WORKDIR app/test
-ENTRYPOINT ["cucumber"]
+ENTRYPOINT [&#34;cucumber&#34;]
 CMD []</code></pre></div></div><div class=paragraph><p>Easy enough:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-bash data-lang=bash>docker build -t my-project-tests -f test/Dockerfile . \
   &amp;&amp; docker run --rm my-project-tests</code></pre></div></div><div class=paragraph><p>I tied this into IDEA and I do not perceive any overhead;
 rebuilding the last few layers after code changes is blazing fast.
 For reference, in my case this <code>docker run</code> runs about ~55s.
 Now, looping like above <em>does</em> add some overhead:</p></div><div class=listingblock><div class=content><pre class=highlight><code class=language-bash data-lang=bash>for f in features/*.feature; do
-    docker run --rm my-project-tests "$f"
+    docker run --rm my-project-tests &#34;$f&#34;
 done</code></pre></div></div><div class=paragraph><p>This ran for ~75s.
 I attribute most of that to one scenario having to actually set up something it would "borrow" in a single run;
 that is, the cost here is from isolation, not using Docker.
 Indeed, moving this shared setup to <code>Dockerfile</code>, I get ~38s for both single and loopy run!</p></div><div class=sect2><h3 id=_summary>Summary</h3><div class=paragraph><p>So what does this give us?</p></div><div class=ulist><ul><li><p>Runs of the individual features are perfectly isolated (up to shared resources outside of the containers, of course):</p><div class=ulist><ul><li><p>No <code>after_</code> hooks/scripts necessary beyond scenario level, at all.</p></li><li><p>Neither dependency nor impact on the host machine.</p></li><li><p>No accidental interference between tests.</p></li><li><p>Features can be tested in parallel by default. Indeed:</p><div class=listingblock><div class=content><pre class=highlight><code class=language-bash data-lang=bash>for f in features/*.feature; do
-    docker run --rm my-project-tests "${f}" &amp;
+    docker run --rm my-project-tests &#34;${f}&#34; &amp;
 done
 wait &lt; &lt;(jobs -p)</code></pre></div></div><div class=paragraph><p>drops the above down to ~18s, with ~15s being the longest individual run!<br>(This is on my Linux machine with #cores > #features, so YMMV.)</p></div></li></ul></div></li><li><p>(Shared) Setup can be moved to (base-)image build time.</p></li></ul></div><div class=paragraph><p>I think this approach has quite some potential!
 One can easily imagine having one <code>Dockerfile</code> per feature and/or

@@ -8,5 +8,5 @@ Creative Commons Attribution 4.0 International License
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
 &lt;/a></copyright><lastBuildDate>Wed, 20 May 2020 10:42:16 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/kotlin/index.xml" rel="self" type="application/rss+xml"/><item><title>Kotlin Native in UBI</title><link>/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/</link><pubDate>Wed, 20 May 2020 10:42:16 +0200</pubDate><guid>/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/</guid><description>&lt;div class="paragraph">
-&lt;p>Does Kotlin Native compile and run on RedHat's Universal Base Image (UBI)?&lt;/p>
+&lt;p>Does Kotlin Native compile and run on RedHat&amp;#39;s Universal Base Image (UBI)?&lt;/p>
 &lt;/div></description></item></channel></rss>

@@ -9,13 +9,13 @@ Creative Commons Attribution 4.0 International License
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
 &lt;/a></copyright><lastBuildDate>Wed, 10 Jun 2020 19:05:44 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Targeted Docker Inspection</title><link>/today-i-learned/posts/2020-06-10-targeted-docker-inspection/</link><pubDate>Wed, 10 Jun 2020 19:05:44 +0200</pubDate><guid>/today-i-learned/posts/2020-06-10-targeted-docker-inspection/</guid><description>&lt;div class="paragraph">
 &lt;p>How do you get basic information about Docker containers in a script?
-Neither &lt;code>docker ps&lt;/code> nor &lt;code>docker inspect&lt;/code> feel really neat&amp;#8201;&amp;#8212;&amp;#8201;one is a pain to parse,
+Neither &lt;code>docker ps&lt;/code> nor &lt;code>docker inspect&lt;/code> feel really neat — one is a pain to parse,
 the other is very verbose.&lt;/p>
 &lt;/div></description></item><item><title>Using Build Tools From Containers</title><link>/today-i-learned/posts/2020-05-29-using-build-tools-from-containers/</link><pubDate>Fri, 29 May 2020 17:38:45 +0200</pubDate><guid>/today-i-learned/posts/2020-05-29-using-build-tools-from-containers/</guid><description>&lt;div class="paragraph">
-&lt;p>You have to use a build tool that you do not want on your machine&amp;#8201;&amp;#8212;&amp;#8201;what to do?
+&lt;p>You have to use a build tool that you do not want on your machine — what to do?
 Run it from a container, of course!&lt;/p>
 &lt;/div></description></item><item><title>Kotlin Native in UBI</title><link>/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/</link><pubDate>Wed, 20 May 2020 10:42:16 +0200</pubDate><guid>/today-i-learned/posts/2020-05-20-kotlin-native-in-ubi/</guid><description>&lt;div class="paragraph">
-&lt;p>Does Kotlin Native compile and run on RedHat's Universal Base Image (UBI)?&lt;/p>
+&lt;p>Does Kotlin Native compile and run on RedHat&amp;#39;s Universal Base Image (UBI)?&lt;/p>
 &lt;/div></description></item><item><title>Display Docker Space Usage</title><link>/today-i-learned/posts/2020-04-21-docker-space-usage/</link><pubDate>Tue, 21 Apr 2020 17:00:00 +0200</pubDate><guid>/today-i-learned/posts/2020-04-21-docker-space-usage/</guid><description>&lt;div class="paragraph">
 &lt;p>Command &lt;code>docker system df&lt;/code> lists how much disk space Docker uses up,
 and for what.&lt;/p>

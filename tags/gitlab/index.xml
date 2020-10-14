@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>GitLab on Today I Learned</title><link>/today-i-learned/tags/gitlab/</link><description>Recent content in GitLab on Today I Learned</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright> © 2020 Raphael Reitzig
+&lt;br />
+This work is licensed under a
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+Creative Commons Attribution 4.0 International License
+&lt;/a>.
+&lt;br />
+&lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
+&lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
+&lt;/a></copyright><lastBuildDate>Wed, 14 Oct 2020 12:59:31 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/gitlab/index.xml" rel="self" type="application/rss+xml"/><item><title>Postpone Discussions in Gitlab</title><link>/today-i-learned/posts/2020-10-14-postpone-discussions-gitlab/</link><pubDate>Wed, 14 Oct 2020 12:59:31 +0200</pubDate><guid>/today-i-learned/posts/2020-10-14-postpone-discussions-gitlab/</guid><description>&lt;div class="paragraph">
+&lt;p>As a professional nitpicker,
+I open a lot of comment threads in reviews.
+Usually, several of them have merit but have to be postponed;
+a new ticket has to be created.
+What a chore!&lt;/p>
+&lt;/div></description></item></channel></rss>

@@ -8,7 +8,7 @@ Creative Commons Attribution 4.0 International License
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
 &lt;/a></copyright><lastBuildDate>Tue, 28 Apr 2020 11:43:44 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Rescue a Lost Commit</title><link>/today-i-learned/posts/2020-04-28-rescue-a-lost-commit/</link><pubDate>Tue, 28 Apr 2020 11:43:44 +0200</pubDate><guid>/today-i-learned/posts/2020-04-28-rescue-a-lost-commit/</guid><description>&lt;div class="paragraph">
-&lt;p>By some creative Git juggling, I actually managed to "lose" a commit today.
+&lt;p>By some creative Git juggling, I actually managed to &amp;#34;lose&amp;#34; a commit today.
 Believe it or not, that was a first for me!&lt;/p>
 &lt;/div></description></item><item><title>Manage IDEA Changelists for Bad Lines</title><link>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</link><pubDate>Wed, 22 Apr 2020 18:57:48 +0200</pubDate><guid>/today-i-learned/posts/2020-04-22-changelist-from-idea-gutter/</guid><description>&lt;div class="paragraph">
 &lt;p>How do &lt;em>you&lt;/em> handle not committing these bits and pieces the reviewers do not want to see?&lt;/p>

@@ -8,11 +8,11 @@ Creative Commons Attribution 4.0 International License
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
 &lt;/a></copyright><lastBuildDate>Mon, 15 Jun 2020 21:29:26 +0200</lastBuildDate><atom:link href="/today-i-learned/tags/library/index.xml" rel="self" type="application/rss+xml"/><item><title>Logging in Go With Zap</title><link>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</link><pubDate>Mon, 15 Jun 2020 21:29:26 +0200</pubDate><guid>/today-i-learned/posts/2020-06-15-logging-in-go-with-zap/</guid><description>&lt;div class="paragraph">
-&lt;p>I'm still getting used to developing native applications,
+&lt;p>I&amp;#39;m still getting used to developing native applications,
 and Go logging was a challenge for me:
 How do I get different logging output in tests and production?&lt;/p>
 &lt;/div></description></item><item><title>Documenting Argument Types With Click</title><link>/today-i-learned/posts/2020-05-04-argument-types-with-click/</link><pubDate>Mon, 04 May 2020 17:12:20 +0200</pubDate><guid>/today-i-learned/posts/2020-05-04-argument-types-with-click/</guid><description>&lt;div class="paragraph">
 &lt;p>Building a Python CLI interface with
 &lt;a href="https://click.palletsprojects.com">click&lt;/a>,
-how can I get the same argument "type" twice in usage instructions?&lt;/p>
+how can I get the same argument &amp;#34;type&amp;#34; twice in usage instructions?&lt;/p>
 &lt;/div></description></item></channel></rss>
