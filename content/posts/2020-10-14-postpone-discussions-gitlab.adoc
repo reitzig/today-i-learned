@@ -1,0 +1,20 @@
+---
+title: "Postpone Discussions in Gitlab"
+date: 2020-10-14T12:59:31+02:00
+tags: ["GitLab", "Tool"]
+---
+
+As a professional nitpicker,
+I open a lot of comment threads in reviews.
+Usually, several of them have merit but have to be postponed;
+a new ticket has to be created.
+What a chore!
+
+<!--more-->
+
+GitLab has a useful, if rather hidden function to create a new ticket for all open threads:
+
+image::img/2020-10-14-gitlab-resolve-discussions.png[Resolve all threads in new issue]
+
+It would be even more useful if we could select a subset of threads --
+but it\'s certainly better than nothing!
