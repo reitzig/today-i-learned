@@ -34,3 +34,8 @@ span.keyseq kbd {
     top: -.1em;
     white-space: nowrap;
 }
+
+/* I prefer the gray */
+p.date {
+    color: #999;
+}

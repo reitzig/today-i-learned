@@ -1,0 +1,8 @@
+{{- if .Params.Tweet -}}
+<section class="article tweet">
+    Comment & Share on 
+    <a href="https://twitter.com/{{ index .Params.Tweet 0 | safeHTML }}/status/{{ index .Params.Tweet 1 | safeHTML }}">
+        Twitter&nbsp;<span class="iconfont icon-twitter"></span>
+    </a>
+</section>
+{{- end -}}

@@ -1,0 +1,52 @@
+/* Add edit link to header */
+section.header h1.title {
+    margin-bottom: 12px;
+}
+
+section.header p.article {
+    display: inline;
+    margin-top: 0px; /* to avoid confusion in dev tools */
+}
+
+p.github_edit, p.github_edit a {
+    font-size: .875em;
+    color: #999;
+}
+
+p.github_edit::before {
+    content: " • "
+}
+
+p.github_edit a::after {
+    content: "Edit";
+}
+
+/* Add tweet link to header */
+p.tweet_link, p.tweet_link a {
+    font-size: .875em;
+    color: #999;
+}
+
+p.tweet_link::before {
+    content: " • "
+}
+
+/* Make sure article box is drawn to cover the post-matter. */
+div.article-container {
+    overflow: hidden;
+}
+
+/* Put tags to the left ... */
+section.labels {
+    float: left;
+    width: 50%;
+    margin-top: 1ex !important;
+}
+
+/* ... and tweet to the right. */
+section.tweet {
+    float: right;
+    width: 50%;
+    text-align: right;
+    margin-top: calc(1ex + 2px) !important; /* Hack: make baselines match*/
+}
