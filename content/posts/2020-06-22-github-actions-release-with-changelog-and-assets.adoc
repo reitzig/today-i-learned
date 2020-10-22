@@ -20,7 +20,7 @@ Today I learned how to build a workflow that proceeds as follows.
 . attach an archive with binary, license, and README for each target platform.
 
 I will explain the most relevant parts with snippets below;
-find the full workflow I created 
+find the full workflow I created
     link:https://github.com/reitzig/container-do/blob/f687b3c25ac941dfcbb692aef3bc62518c77d33f/.github/workflows/release.yml[here].
 
 
@@ -43,7 +43,7 @@ build:
         - 'amd64'
 ```
 
-It is important to note here that `target-os` and `target-arch` are my choice, not built-ins -- 
+It is important to note here that `target-os` and `target-arch` are my choice, not built-ins --
 use whichever parameters your build requires!
 We can use those names as variables in a step later on:
 
@@ -88,7 +88,7 @@ Now, in a separate job without a build matrix, we can assemble our release.
 We will use the neat action
     link:https://github.com/marketplace/actions/git-release[git-release],
 but some preparation is needed.
-First, we download the build archives from the artifact store and 
+First, we download the build archives from the artifact store and
 create a list of all included files.
 
 ```yaml

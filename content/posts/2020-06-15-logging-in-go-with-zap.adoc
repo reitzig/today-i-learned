@@ -7,7 +7,7 @@ tweet: ["OmegaPolice","1272629065888018432"]
 ---
 
 I\'m still getting used to developing native applications,
-and Go logging was a challenge for me: 
+and Go logging was a challenge for me:
 How do I get different logging output in tests and production?
 <!--more-->
 
@@ -20,7 +20,7 @@ here is what I want from logging:
  - high verbosity during tests, including timestamps;
  - lower verbosity in production, only actionable output.
 
-Go\'s 
+Go\'s
     link:https://golang.org/pkg/log/[built-in logging]
 does not seem the have all of these features,
 or maybe I did not see them due to its rather arcane API.
@@ -66,7 +66,7 @@ logger.Warn("Oh no!")
 //> 2020-06-15T21:49:16.513+0200	warn	app.go:77	Oh no!
 ```
 
-The documentation of 
+The documentation of
     link:https://pkg.go.dev/go.uber.org/zap@v1.15.0?tab=doc#Config[`+Config+`]
 is helpful and it seems easy to customize the logger even further.
 
@@ -82,7 +82,7 @@ I created a runnable example based on the above:
 
 Of course, you can also use dynamic state, at the cost of fewer potential for
 compiler optimization.
-For example, I have pivoted to 
+For example, I have pivoted to
     link:https://github.com/reitzig/container-do/blob/d17359b2f3eb1d18da51591fa0e0d25856ba6506/cmd/container-do/logger.go[using an environment variable]
 in container-do (and trimmed down the output even more).
 ====

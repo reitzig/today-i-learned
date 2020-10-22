@@ -9,7 +9,7 @@ Does Kotlin Native compile and run on RedHat\'s Universal Base Image (UBI)?
 
 First, why build your container image on top of UBI at all?
 Well, it is apparently best practice on OpenShift, at least if you ask RedHat.
-They can 
+They can
     link:https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image[explain better].
 
 Since Kotlin Native does not work in quite _any_ container
@@ -28,7 +28,7 @@ COPY hello-world.kt ./
 RUN export PATH=kotlin-native-linux-${kotlin_version}/bin:$PATH \
  && kotlinc-native hello-world.kt -o hello-world
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 FROM registry.access.redhat.com/ubi7/ubi-minimal:latest AS run
 
@@ -39,7 +39,7 @@ CMD ./hello-world
 
 [NOTE]
 ====
-I skipped the installation of Kotlin Native here; 
+I skipped the installation of Kotlin Native here;
 it is not as neat as one would wish.
 Maybe there will be a `+yum+` package at some point.
 

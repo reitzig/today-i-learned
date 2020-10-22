@@ -8,11 +8,11 @@ Navigating Slack efficiently is not as bad as I thought.
 <!--more-->
 
 I already knew about kbd:[Ctrl + K] to jump to a channel or chat,
-and about kbd:[Ctrl + F] for search. 
+and about kbd:[Ctrl + F] for search.
 But something still felt off: jumping between chats was more awkward then I expect.
 
 Now I discovered these subtle buttons:
-    
+
 image::img/2020-04-24-navigating-slack.png[Forward and backward buttons next to the search bar]
 
 And they even inform me that I can use kbd:[Alt + ←] resp. kbd:[Alt + →] to navigate through my history -- neat!

@@ -4,8 +4,8 @@ date: 2020-05-04T17:12:20+02:00
 tags: ["Programming", "Library"]
 ---
 
-Building a Python CLI interface with 
-    link:https://click.palletsprojects.com[click], 
+Building a Python CLI interface with
+    link:https://click.palletsprojects.com[click],
 how can I get the same argument "type" twice in usage instructions?
 <!--more-->
 
@@ -50,7 +50,7 @@ Usage: hello.py [OPTIONS] CALLEE [CALLER]
 ```
 
 This is unfortunate in this case: it would be much clearer to see the "type" `+NAME+` reflected here!
-Turns out we can add 
+Turns out we can add
     link:https://click.palletsprojects.com/en/7.x/api/#click.ParamType.get_metavar[`+metavar+`]
 to `+NameParamType+`.
 For instance:

@@ -15,7 +15,7 @@ Not all changes you make to files should be committed.
 Staging resp. committing only parts of files is a useful feature of Git in that regard.
 On the command line, add the `+-p+` option when staging or committing.
 Good visual clients such as IDEA also support this.
-    
+
 [link=img/2020-05-07-partial-commit.png]
 image::img/2020-05-07-partial-commit.png[Partial commit UI in IDEA]
 

@@ -6,13 +6,13 @@ tweet: ["OmegaPolice", "1271171835904905216"]
 ---
 
 How do you get basic information about Docker containers in a script?
-Neither `+docker ps+` nor `+docker inspect+` feel really neat -- 
+Neither `+docker ps+` nor `+docker inspect+` feel really neat --
 one is a pain to parse,
 the other is very verbose.
 <!--more-->
 
-If you are happy adding a dependency to your script, 
-the ever more popular 
+If you are happy adding a dependency to your script,
+the ever more popular
   link:https://stedolan.github.io/jq/[`+jq+`]
 can do the job for you:
 
@@ -22,11 +22,11 @@ can do the job for you:
 ```
 
 While `+jq+` is a useful helper to pick up,
-this still feels a little off. 
+this still feels a little off.
 Shouldn\'t Docker have something for us?
 
 It does, indeed!
-Despite the misleading name, 
+Despite the misleading name,
   link:https://docs.docker.com/engine/reference/commandline/inspect/[`+--format+`]
 does the trick.
 
@@ -41,11 +41,11 @@ for instance like `+{{json .Config.Env}}+`.
 
 [TIP]
 ====
-In combination with `+watch+`, 
-you can use `+--format+` with the different `+docker+` commands 
+In combination with `+watch+`,
+you can use `+--format+` with the different `+docker+` commands
 to create your favorite live Docker dashboard with only a few terminals!
-     
-When I work with containers, 
+
+When I work with containers,
 I usually have something like this somewhere to the side,
 just to keep track of what has been accumulating:
 

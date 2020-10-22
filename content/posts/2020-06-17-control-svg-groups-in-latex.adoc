@@ -7,11 +7,11 @@ tweet: ["OmegaPolice", "1275069480142401536"]
 
 I love the powerful LaTeX drawing package
     link:http://www.texample.net/tikz/[TikZ]
-and use it whenever I can, 
+and use it whenever I can,
 in particular for creating SVGs.
 Converting from PDF to SVG with
     link:https://inkscape.org/[Inkscape]
-usually gives good results, visually -- 
+usually gives good results, visually --
 but what if the _structure_ of the XML is important, as well?
 <!--more-->
 
@@ -22,8 +22,8 @@ Unfortunately, as I describe
 the `+lualatex+`+Inkscape pipeline can create pathological group arrangements that are a pain to work with.
 
 Helpful user
-    link:https://tex.stackexchange.com/users/1053/alexg[AlexG] 
-    link:https://tex.stackexchange.com/a/549798/3213[reminded me] 
+    link:https://tex.stackexchange.com/users/1053/alexg[AlexG]
+    link:https://tex.stackexchange.com/a/549798/3213[reminded me]
 of the `+dvilualatex+`+`+dvisvgm+` pipeline.
 Given that
     link:https://dvisvgm.de/[`+dvisvgm+`]
