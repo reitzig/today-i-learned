@@ -2,6 +2,7 @@
 title: "Private GitLab mirror of a public GitHub repository"
 date: 2020-11-12T17:00:00+01:00
 tags: ["GitLab", "Tool"]
+tweet: ["OmegaPolice", "1326921829294989312"]
 ---
 
 Have you ever needed a "manual" mirror of a repository on GitLab?
@@ -58,7 +59,7 @@ Given that this is only a mirror, I consider the potential risks negligible.
 Grab yourself a shell!
 
 ```bash
-git clone git@gitlab.codecentric.de:my-team/that-library.git
+git clone git@my-gitlab:my-team/that-library.git
 git remote add upstream "https://github.com/that-team/that-library.git"
 git pull upstream master --rebase
 ```
@@ -88,7 +89,7 @@ pull_upstream:
   script:
     - git checkout master
     - git pull "https://github.com/that-team/that-library.git" master --rebase
-    - git push -f "git@gitlab.codecentric.de:my-team/that-library.git" master
+    - git push -f "git@my-gitlab:my-team/that-library.git" master
 
 publish:
   stage: Publish Maven Artifacts
