@@ -1,0 +1,124 @@
+---
+title: "Private GitLab mirror of a public GitHub repository"
+date: 2020-11-12T17:00:00+01:00
+tags: ["GitLab", "Tool"]
+---
+
+Have you ever needed a "manual" mirror of a repository on GitLab?
+<!--more-->
+
+In our case,
+we want to use a library as Maven dependency.
+While it is published under an OSS license on GitHub,
+there is no Maven deployment (yet) --
+we need to deploy it for ourselves.
+The basic idea is to
+
+- pull the upstream `master` every night,
+- rebase our changes (if any) on top, and
+- push the result to our repository;
+- on every push, build and deploy the library.
+
+The last part depends on your actual goal and is interchangeable;
+the tricky bit is mirroring the repository.
+
+NOTE: GitLab _does_ have
+link:https://docs.gitlab.com/ee/user/project/repository/repository_mirroring.html#pulling-from-a-remote-repository[pull-mirroring built in]
+-- if you pay for it.
+I don\'t know how well that covers making _changes_ to that fork, though.
+
+Here is what you do.
+
+== GitLab
+
+Perform these steps in the web UI of GitLab.
+I\'m sure they can be automated using the API,
+but even I couldn\'t be bothered to script such a rare occurrence.
+
+. Create a new project.
+. Unprotect `master`.
+. Add a deploy key with write access to the repository.
+. Create two pipeline variables:
+  `SSH_PRIVATE_KEY`::
+    Paste the private key you just created  here.
+  `SSH_KNOWN_HOSTS`::
+    Paste the SSH server key fingerprints of your GitLab instance.
+.  Create a pipeline schedule on `master`.
+
+NOTE: Why the SSH key, you might ask?
+While the documentation seems to suggest that accessing the current repository should be possible with a project access token,
+it link:https://stackoverflow.com/q/63924723/539599[doesn\'t seem to be].
+Hence, this link:https://docs.gitlab.com/ee/ci/ssh_keys/[workaround].
+
+WARNING: You\'ll note that this gives the GitLab CI pipeline the power to do pretty much anything on that repository.
+Given that this is only a mirror, I consider the potential risks negligible.
+
+== Local
+
+Grab yourself a shell!
+
+```bash
+git clone git@gitlab.codecentric.de:my-team/that-library.git
+git remote add upstream "https://github.com/that-team/that-library.git"
+git pull upstream master --rebase
+```
+
+Add the GitLab pipeline:
+
+..gitlab-ci.yml
+```yaml
+stages:
+  - Pull Upstream
+  - Publish Maven Artifacts
+
+pull_upstream:
+  stage: Pull Upstream
+  only:
+    - schedules
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq git openssh-client
+    - eval $(ssh-agent -s)
+    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "${SSH_KNOWN_HOSTS}" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+  script:
+    - git checkout master
+    - git pull "https://github.com/that-team/that-library.git" master --rebase
+    - git push -f "git@gitlab.codecentric.de:my-team/that-library.git" master
+
+publish:
+  stage: Publish Maven Artifacts
+  only:
+    - master
+  except:
+    - schedules
+  image: maven:3.6.3-jdk-11
+  cache:
+    paths:
+      - .m2/repository
+  variables:
+    MAVEN_CLI_OPTS: "--batch-mode --settings settings_ci.xml"
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  script:
+    - mvn ${MAVEN_CLI_OPTS} deploy
+```
+
+The `publish` stage depends on what you want to do, of course.
+In our case, we needed to change the Maven configuration as well;
+that part is link:https://docs.gitlab.com/ee/user/packages/maven_repository/[well documented].
+
+Finally, a plain
+
+```bash
+git commit --all -m "OVERRIDE: CI/CD for the fork"
+git push origin master
+```
+
+seals the deal and runs the first deployment.
+The setup keeps deploying new versions of the library as they appear,
+unless the nightly rebase fails;
+in that case we have to resolve the conflicts locally.

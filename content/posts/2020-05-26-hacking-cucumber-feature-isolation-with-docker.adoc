@@ -19,12 +19,12 @@ including using a tool more suited to the tests I want to write.
 
 ## The Problem
 
-link:https://cucumber.io/docs/gherkin/[Gherkin]'s 
-`+Feature+` is just ... not a first-class entity in 
+link:https://cucumber.io/docs/gherkin/[Gherkin]'s
+`+Feature+` is just ... not a first-class entity in
   link:https://cucumber.io/docs/cucumber/[Cucumber]:
 The steps you write in `+Background+` are simply copied down to every `+Scenario+`.
 Same for the existing
-  link:https://cucumber.io/docs/cucumber/api/#hooks[hooks]: 
+  link:https://cucumber.io/docs/cucumber/api/#hooks[hooks]:
 they all trigger for each `+Scenario+`.
 While that makes for a very simple and clear runtime model, it has its limits.
 
@@ -49,8 +49,8 @@ Well.
 ## Possible Hacks
 
 Coming from frameworks like JUnit, us developer types are used to something like a
-`+BeforeAll+`/`+AfterAll+` hook pair scoped to files, classes, or a similar unit of grouping; 
-Cucumber (only) has the equivalent of `+BeforeEach+`/`+AfterEach+`. 
+`+BeforeAll+`/`+AfterAll+` hook pair scoped to files, classes, or a similar unit of grouping;
+Cucumber (only) has the equivalent of `+BeforeEach+`/`+AfterEach+`.
 Lifting this to `+BeforeAll+` is not too hard by making the hook idempotent:
 
 ```ruby
@@ -65,24 +65,24 @@ I actually prefer to make the setup explicit in Gherkin `+Background+`,
 so I did
 
 ```ruby
-Given 'set up' do 
+Given 'set up' do
   if setup_needed?
     perform_setup
   end
 end
 ```
 
-This has the added benefit of being able to pass feature- and/or scenario-specific values 
-(note how `+Before+` can not even access the scenario, let alone the feature!) 
+This has the added benefit of being able to pass feature- and/or scenario-specific values
+(note how `+Before+` can not even access the scenario, let alone the feature!)
 and providing more opportunity for modularization and re-use than hooks.
 
-Now, if `+setup_needed?+` is significantly faster than `+perform_setup+` 
+Now, if `+setup_needed?+` is significantly faster than `+perform_setup+`
 -- a global property could be used, if all else fails --
 this solves the setup cost problem.
 
 But how do we tear down a setup in an orderly way so the next `+Feature+` can start from scratch?
-There is not even an equivalent to `+Background+` in Gherkin! 
-Without slapping tear-down on "the last" scenario 
+There is not even an equivalent to `+Background+` in Gherkin!
+Without slapping tear-down on "the last" scenario
 (preventing clear test documents _and_ parallel test execution)
 either explicitly or counting, there does not seem to be a way.
 The best the community has to offer seems to be:
@@ -135,7 +135,8 @@ And if you\'re not willing...
 
 I for one do not appreciate moving test logic out of the test code. Smells.
 
-## [[solution]]Isolation on Platform Level
+[#solution]
+## Isolation on Platform Level
 
 I use Docker to run my tests in order to isolate them from my machine
 -- each test may mess with my system, and I _really_ do not want to write `+after_all.sh+` --
@@ -203,7 +204,7 @@ I think this approach has quite some potential!
 One can easily imagine having one `+Dockerfile+` per feature and/or
 using other sub-setting features of Cucumber to fine-tune the trade-off between isolation and running time even further.
 
-The biggest challenge, I expect, is clarity: 
+The biggest challenge, I expect, is clarity:
 Ideally, we would _see_ all setup in the Gherkin files;
 as far as it is relevant on the behaviour/domain level, anyway.
 Maybe, with some experience, a container-driven runner for Cucumber could be built?
