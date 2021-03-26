@@ -2,6 +2,7 @@
 title: "Project-Specific Shell Configuration"
 date: 2021-03-26T19:42:40+01:00
 tags: [Tool,Shell]
+tweet: ["OmegaPolice", "1375535323304882183"]
 ---
 
 If you have many different projects, each with their own tool stack, SaaS providers, and whatnot,
