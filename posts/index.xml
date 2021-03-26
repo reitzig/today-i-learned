@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Today I Learned</title><link>/today-i-learned/posts/</link><description>Recent content in Posts on Today I Learned</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright> © 2020 Raphael Reitzig
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Today I Learned</title><link>/today-i-learned/posts/</link><description>Recent content in Posts on Today I Learned</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright> © 2020 &amp;ndash; 2021 Raphael Reitzig
 &lt;br />
 This work is licensed under a
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
@@ -7,7 +7,11 @@ Creative Commons Attribution 4.0 International License
 &lt;br />
 &lt;a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>
 &lt;img alt='Creative Commons License' style='border-width:0' src='cc-by-80x15.png' />
-&lt;/a></copyright><lastBuildDate>Thu, 12 Nov 2020 17:00:00 +0100</lastBuildDate><atom:link href="/today-i-learned/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Private GitLab mirror of a public GitHub repository</title><link>/today-i-learned/posts/2020-11-12-mirror-github-to-gitlab-registry/</link><pubDate>Thu, 12 Nov 2020 17:00:00 +0100</pubDate><guid>/today-i-learned/posts/2020-11-12-mirror-github-to-gitlab-registry/</guid><description>&lt;div class="paragraph">
+&lt;/a></copyright><lastBuildDate>Fri, 26 Mar 2021 19:42:40 +0100</lastBuildDate><atom:link href="/today-i-learned/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Project-Specific Shell Configuration</title><link>/today-i-learned/posts/2021-03-26-project-specific-shell-config/</link><pubDate>Fri, 26 Mar 2021 19:42:40 +0100</pubDate><guid>/today-i-learned/posts/2021-03-26-project-specific-shell-config/</guid><description>&lt;div class="paragraph">
+&lt;p>If you have many different projects, each with their own tool stack, SaaS providers, and whatnot,
+you may have been annoyed at all projects sharing the same configuration stored in your home folder.
+Here is how you can isolate projects using &lt;a href="https://github.com/direnv/direnv">direnv&lt;/a>.&lt;/p>
+&lt;/div></description></item><item><title>Private GitLab mirror of a public GitHub repository</title><link>/today-i-learned/posts/2020-11-12-mirror-github-to-gitlab-registry/</link><pubDate>Thu, 12 Nov 2020 17:00:00 +0100</pubDate><guid>/today-i-learned/posts/2020-11-12-mirror-github-to-gitlab-registry/</guid><description>&lt;div class="paragraph">
 &lt;p>Have you ever needed a &amp;#34;manual&amp;#34; mirror of a repository on GitLab?&lt;/p>
 &lt;/div></description></item><item><title>Postpone Discussions in GitLab</title><link>/today-i-learned/posts/2020-10-14-postpone-discussions-gitlab/</link><pubDate>Wed, 14 Oct 2020 12:59:31 +0200</pubDate><guid>/today-i-learned/posts/2020-10-14-postpone-discussions-gitlab/</guid><description>&lt;div class="paragraph">
 &lt;p>As a professional nitpicker,
