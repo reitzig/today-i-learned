@@ -2,7 +2,7 @@ baseURL = "https://reitzig.github.io/today-i-learned/"
 title = "Today I Learned"
 languageCode = "en-us"
 copyright = """
-    © 2020 Raphael Reitzig
+    © 2020 &ndash; 2021 Raphael Reitzig
     <br />
     This work is licensed under a
     <a rel='license' href='http://creativecommons.org/licenses/by/4.0/'>

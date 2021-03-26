@@ -1,0 +1,85 @@
+---
+title: "Project-Specific Shell Configuration"
+date: 2021-03-26T19:42:40+01:00
+tags: [Tool,Shell]
+---
+
+If you have many different projects, each with their own tool stack, SaaS providers, and whatnot,
+you may have been annoyed at all projects sharing the same configuration stored in your home folder.
+Here is how you can isolate projects using link:https://github.com/direnv/direnv[direnv].
+<!--more-->
+
+The principle is rather simple:
+
+- You add a file called `+.envrc+` to any directory you need specific setup for,
+- add instructions that update the environment as necessary, and
+- run `direnv allow` once to confirm you want to apply what you just did.
+
+From then on, whenever you visit that directory (or a sub-directory) in your shell,
+your custom environment (variables) will be loaded.
+
+[TIP]
+====
+Environment hygiene is particularly important when you let your shell prompt display different information,
+for instance with link:https://github.com/starship/starship[starship].
+Your prompt can get quite crowded otherwise!
+====
+
+That is all very abstract --
+here are a few concrete examples that I have been using every day.
+
+
+**Kubernetes**::
+By default, `+kubectl+` will store all contexts in `+.kube/config+`.
+That\'s fine for my Minikube setup, but I prefer to keep project-specific environments separate;
+not least, I want to be sure that credentials are _gone_ when I delete the project folder!
+
+.`+kube_config.yaml+`
+[source,yaml]
+----
+apiVersion: v1
+# <snip>
+----
+
+.`+.envrc+`
+[source,bash]
+----
+export KUBECONFIG="/home/raphael/.kube/config:$(realpath .)/kube_config.yaml"
+----
+
+Here, I _add_ the local config; replacing it would be just as easy.
+
+[NOTE]
+====
+The invocation of `+realpath+` ensures that `+KUBECONFIG+` refers to the correct file,
+even if I switch to a sub-directory.
+If I ever do _not_ want that, I can use a relative path.
+====
+
+I have also taken to adding the output of `+minikube docker-env+` so that I can directly interface with the Docker demon inside
+
+
+**gcloud**::
+Similar approach for a Google Cloud project, also adding the project identifier:
+
+.`+.envrc+`
+[source,bash]
+----
+export CLOUDSDK_CONFIG=$(realpath .)/gcloud-config
+export PROJECT_ID=my-project
+----
+
+I was quite appalled by how invasive the Google Cloud SDK acts on the shell environment in general;
+I might re-install it in a place that is not usually on the `+PATH+`, and
+then add it selectively only in matching project folders.
+
+
+**Python**::
+When I run `+venv/bin/pytest+`, it needs help to find all the includes.
+Simple fix:
+
+.`+.envrc+`
+[source,bash]
+----
+export PYTHONPATH="$(realpath src):$(realpath test)"
+----
