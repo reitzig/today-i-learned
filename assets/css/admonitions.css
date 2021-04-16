@@ -16,29 +16,6 @@
 .admonitionblock td.icon .icon-caution:before {content:"\f06d";color:#bf3400}
 .admonitionblock td.icon .icon-important:before {content:"\f06a";color:#bf0000}
 
-/* Use custom icon font 
-   Note: Generated with fontello.com using Unicode encoding.
-   Thank you, Font Awesome! */
-@font-face {
-    font-family: "admonition_icons";
-    src: url('{{- "/assets/font/admonition_icons.ttf" | relURL -}}') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-.admonitionblock td.icon [class^="fa icon-"] {
-    font-family: "admonition_icons" !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-style: normal;
-}
-
-.admonitionblock td.icon .icon-note:before {content:"\e801" !important} /* info circled */
-.admonitionblock td.icon .icon-tip:before {content:"\f0eb" !important} /* lightbulb */
-.admonitionblock td.icon .icon-warning:before {content:"\e802" !important} /* attention */
-.admonitionblock td.icon .icon-caution:before {content:"\e804"!important} /* fire */
-.admonitionblock td.icon .icon-important:before {content:"\e803" !important} /* attention circled */
-
 /* Override general table styling for admonition boxes */
 .admonitionblock td.icon {
     border: none !important;

@@ -48,4 +48,6 @@ css = [
 
 [markup.asciidocext.attributes]
 experimental = true
-icons = "font"
+icons = "image"
+icontype = "svg"
+iconsdir = "assets/icons"
