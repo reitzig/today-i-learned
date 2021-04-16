@@ -21,6 +21,7 @@ author = "Raphael Reitzig"
 #slogan = "Lesson of the day"
 sources = "https://github.com/reitzig/today-i-learned"
 license = ""
+# fullRss = true # doesn't show up well in the feed reader, unfortunately
 
 [params.nav]
 showTags = true             # /tags/

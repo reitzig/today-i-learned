@@ -1,12 +1,12 @@
-{{- if .Site.Params.Sources -}}
+{{- if .Site.Params.Sources }}
 <p class="article github_edit">
     <a rel="nofollow" href="{{ .Site.Params.Sources | safeHTML }}/edit/master/content/{{ .File.Path | safeHTML }}"></a>
 </p>
-{{- end -}}
-{{- if .Params.Tweet -}}
+{{- end }}
+{{- if .Params.Tweet }}
 <p class="article tweet_link">
     <a href="https://twitter.com/{{ index .Params.tweet 0 | safeHTML }}/status/{{ index .Params.tweet 1 | safeHTML }}">
         <span class="iconfont icon-twitter"></span>
     </a>
 </p>
-{{- end -}}
+{{- end }}
