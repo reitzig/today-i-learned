@@ -1,6 +1,7 @@
 ---
 title: "Project-Specific Shell Configuration"
 date: 2021-03-26T19:42:40+01:00
+lastmod: 2022-03-15T12:35:46+01:00
 tags: [Tool,Shell]
 tweet: ["OmegaPolice", "1375535323304882183"]
 ---
@@ -45,7 +46,7 @@ apiVersion: v1
 .`+.envrc+`
 [source,bash]
 ----
-export KUBECONFIG="/home/raphael/.kube/config:$(realpath .)/kube_config.yaml"
+export KUBECONFIG="$(realpath .)/kube_config.yaml:${HOME}/.kube/config"
 ----
 
 Here, I _add_ the local config; replacing it would be just as easy.
@@ -53,8 +54,11 @@ Here, I _add_ the local config; replacing it would be just as easy.
 [NOTE]
 ====
 The invocation of `+realpath+` ensures that `+KUBECONFIG+` refers to the correct file,
-even if I switch to a sub-directory.
+even if I switch to a sub-directory later.
 If I ever do _not_ want that, I can use a relative path.
+
+The link:https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#merging-kubeconfig-files[order matters]
+as well: the _first_ entry takes precedence, and is where `+kubectl+` will write to.
 ====
 
 I have also taken to adding the output of `+minikube docker-env+` so that I can directly interface with the Docker demon inside
