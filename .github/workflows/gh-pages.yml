@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -27,7 +27,7 @@ jobs:
           ruby-version: 2.7
 
       - name: Setup asciidoctor
-        uses: reitzig/actions-asciidoctor@v2.0.0
+        uses: reitzig/actions-asciidoctor@v2.0.1
 
       - name: Build
         run: hugo --minify
